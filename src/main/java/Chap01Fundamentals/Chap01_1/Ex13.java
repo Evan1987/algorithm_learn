@@ -1,6 +1,6 @@
-package Chap01Fundamentals;
+package Chap01Fundamentals.Chap01_1;
 
-public class Test1_1_13 {
+public class Ex13 {
     private static int[][] transpose(int[][] x){
         int m = x.length;
         int n = x[0].length;

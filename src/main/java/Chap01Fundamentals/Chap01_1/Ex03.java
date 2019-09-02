@@ -1,10 +1,10 @@
-package Chap01Fundamentals;
+package Chap01Fundamentals.Chap01_1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Test1_1_03 {
+public class Ex03 {
     public static void main(String[] args){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try{

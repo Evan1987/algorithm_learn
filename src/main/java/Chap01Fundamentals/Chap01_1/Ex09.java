@@ -1,6 +1,6 @@
-package Chap01Fundamentals;
+package Chap01Fundamentals.Chap01_1;
 
-public class Test1_1_09 {
+public class Ex09 {
     private static String Int2Binary(int n){
         String s = "";
         for(int x = n; x > 0; x /= 2){
