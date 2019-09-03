@@ -1,5 +1,7 @@
 package Chap01Fundamentals.Chap01_1;
 
+import Chap01Fundamentals.StdIn;
+
 public class Ex30 {
     private static int gcd(int p, int q){
         if(p == 0 || q == 0) return 1;
@@ -13,6 +15,14 @@ public class Ex30 {
     }
 
     public static void main(String[] args){
-        int N =
+        int N = StdIn.readInt();
+        boolean[][] a = new boolean[N][N];
+        for(int i = 0; i < N; i++){
+            for(int j = i; j < N; j++){
+                a[i][j] = gcd(i, j) == 1;
+                System.out.print(a[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
