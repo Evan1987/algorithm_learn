@@ -1,6 +1,6 @@
 package Chap01Fundamentals.Chap01_1;
 
-import Chap01Fundamentals.StdIn;
+import utils.StdIn;
 
 public class Ex30 {
     private static int gcd(int p, int q){

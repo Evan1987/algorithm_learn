@@ -1,4 +1,4 @@
-package Chap01Fundamentals;
+package utils;
 
 public class Array {
 
