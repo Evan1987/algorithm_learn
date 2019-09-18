@@ -1,4 +1,4 @@
-package Chap01Fundamentals.Chap01_1;
+package Chap01Fundamentals.Chap01_01;
 
 public class Ex09 {
     private static String Int2Binary(int n){

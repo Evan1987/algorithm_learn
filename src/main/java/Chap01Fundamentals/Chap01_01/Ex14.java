@@ -1,4 +1,4 @@
-package Chap01Fundamentals.Chap01_1;
+package Chap01Fundamentals.Chap01_01;
 
 
 // 返回不大于log2N的最大整数，禁用math库

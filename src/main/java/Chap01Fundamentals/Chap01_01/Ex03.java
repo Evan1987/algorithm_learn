@@ -1,4 +1,4 @@
-package Chap01Fundamentals.Chap01_1;
+package Chap01Fundamentals.Chap01_01;
 
 import java.io.BufferedReader;
 import java.io.IOException;

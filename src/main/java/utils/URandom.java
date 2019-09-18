@@ -10,27 +10,30 @@ public class URandom {
         random = new Random(seed);
     }
 
+    public URandom(Long seed){
+        this.seed = seed;
+        random = new Random(seed);
+    }
+
     public URandom(){}
 
-    public void setSeed(Long seed){this.seed = seed;}
-
-    public static Long getSeed(){
+    public Long getSeed(){
         return seed;
     }
 
-    public static double uniform(){
+    public double nextDouble(){
         return random.nextDouble();
     }
 
-    public static int uniform(int N){
+    public int uniform(int N){
         return random.nextInt(N);
     }
 
-    public static int uniform(int a, int b){
+    public int uniform(int a, int b){
         return a + random.nextInt(b - a);
     }
 
-    public static double uniform(double a, double b){
+    public double uniform(double a, double b){
         return a + random.nextDouble() * (b - a);
     }
 }

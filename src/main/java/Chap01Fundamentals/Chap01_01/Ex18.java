@@ -1,4 +1,4 @@
-package Chap01Fundamentals.Chap01_1;
+package Chap01Fundamentals.Chap01_01;
 
 public class Ex18 {
     private static int mystery(int a, int b){  // 乘法运算

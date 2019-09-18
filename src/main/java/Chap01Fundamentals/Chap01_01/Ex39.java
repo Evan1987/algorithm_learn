@@ -1,4 +1,4 @@
-package Chap01Fundamentals.Chap01_1;
+package Chap01Fundamentals.Chap01_01;
 
 import utils.Array;
 import utils.URandom;
@@ -27,9 +27,6 @@ public class Ex39 {
         for(int i = 0; i < num.length; i++){
             System.out.printf("%7d: %9.2f\n", num[i], (double) log[i] / T);
         }
-
-
-
     }
 
     private static int[] initArr(int N){
