@@ -2,7 +2,10 @@ package Chap01Fundamentals.Chap01_03;
 
 import java.util.Iterator;
 
-public class Stack<Item> implements Iterator<Item> {
+/**
+ * LIFO(Last In First Out) Stack -> Stack
+ * */
+public class Stack<Item> implements Iterable<Item> {
     private class Node{
         Item item;
         Node next;
@@ -23,6 +26,48 @@ public class Stack<Item> implements Iterator<Item> {
         this.first = new Node();
         this.first.item = item;
         this.first.next = oldFirst;
+        this.N ++;
+    }
+
+    public Item pop(){
+        Item item = this.first.item;
+        this.first = this.first.next;
+        this.N -- ;
+        return item;
+    }
+
+    private class ListIterator implements Iterator<Item> {
+        private Node current = first;
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public Item next() {
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
+
+        public void remove() {
+        }
+    }
+
+    public Iterator<Item> iterator() {
+        return new ListIterator();
+    }
+
+    public static void main(String[] args){
+        String[] inputs = {"to", "be", "or", "not", "to", "-", "be", "-", "-", "that", "-", "-", "-", "is"};
+        Stack<String> s = new Stack<String>();
+        for(String x: inputs){
+            if(!x.equals("-")){
+                s.push(x);
+            }else{
+                System.out.println(s.pop());
+            }
+        }
+        System.out.println("(" + s.size() + " left on stack)");
     }
 
 }
