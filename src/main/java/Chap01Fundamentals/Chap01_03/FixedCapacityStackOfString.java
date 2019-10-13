@@ -8,6 +8,12 @@ public class FixedCapacityStackOfString {
     }
 
     public boolean isEmpty() {return this.N == 0;}
+
+    /**
+     * Added by Ex 1.3.1
+     * */
+    public boolean isFull() {return this.N == this.a.length;}
+
     public int size(){return this.N;}
     public void push(String item){
         this.a[this.N ++] = item;

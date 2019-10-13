@@ -1,6 +1,7 @@
 package Chap01Fundamentals.Chap01_03;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * LIFO(Last In First Out) Stack -> Stack
@@ -34,6 +35,14 @@ public class Stack<Item> implements Iterable<Item> {
         this.first = this.first.next;
         this.N -- ;
         return item;
+    }
+
+    /**
+     * Added by Ex 1.3.7
+     * */
+    public Item peek(){
+        if(isEmpty()) throw new NoSuchElementException("Stack is empty!");
+        return this.first.item;
     }
 
     private class ListIterator implements Iterator<Item> {
