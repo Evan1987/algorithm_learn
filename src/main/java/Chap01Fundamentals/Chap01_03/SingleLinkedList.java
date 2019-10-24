@@ -4,24 +4,16 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class SingleLinkedList<Item>  {
-    private class Node {
-        Item item;
-        Node next;
-        public Node(Item v){
-            this.item = v;
-            this.next = null;
-        }
-    }
 
-    private Node first;
+    private Node<Item> first;
     private int N;
 
     public boolean isEmpty(){return this.first == null;}
     public int size(){return this.N;}
 
     public void addHead(Item item){
-        Node oldFirst = this.first;
-        this.first = new Node(item);
+        Node<Item> oldFirst = this.first;
+        this.first = new Node<Item>(item);
         this.first.next = oldFirst;
         this.N ++;
     }
@@ -32,7 +24,7 @@ public class SingleLinkedList<Item>  {
         if(this.N == 1)
             this.first = null;
         else
-            for(Node x = this.first; x != null; x = x.next){
+            for(Node<Item> x = this.first; x != null; x = x.next){
                 if(x.next.next == null)
                     x.next = null;
             }
@@ -47,7 +39,7 @@ public class SingleLinkedList<Item>  {
             return;
         }
         int index = 1;
-        for(Node x = this.first; x != null; x = x.next){
+        for(Node<Item> x = this.first; x != null; x = x.next){
             if(index == k - 1) {
                 x.next = x.next.next;
                 break;
@@ -58,7 +50,7 @@ public class SingleLinkedList<Item>  {
 
     // Ex 21
     public boolean find(Item key){
-        for(Node x = this.first; x != null; x = x.next){
+        for(Node<Item> x = this.first; x != null; x = x.next){
             if(x.item == key) return true;
         }
         return false;
