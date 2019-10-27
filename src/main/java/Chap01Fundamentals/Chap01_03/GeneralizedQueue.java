@@ -6,6 +6,7 @@ public class GeneralizedQueue<Item> {
 
     public boolean isEmpty(){return N == 0;}
 
+
     private void resize(int max){
         Item[] temp = (Item[]) new Object[max];
         for(int i = 0; i < this.N; i ++){

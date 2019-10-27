@@ -7,11 +7,7 @@ import java.util.NoSuchElementException;
  * LIFO(Last In First Out) Stack -> Stack
  * */
 public class Stack<Item> implements Iterable<Item> {
-    private class Node{
-        Item item;
-        Node next;
-    }
-    private Node first;
+    private Node<Item> first;
     private int N;
 
     public boolean isEmpty(){
@@ -24,7 +20,7 @@ public class Stack<Item> implements Iterable<Item> {
 
     public void push(Item item){
         Node oldFirst = this.first;
-        this.first = new Node();
+        this.first = new Node<Item>(item);
         this.first.item = item;
         this.first.next = oldFirst;
         this.N ++;
@@ -37,6 +33,19 @@ public class Stack<Item> implements Iterable<Item> {
         return item;
     }
 
+    public Stack(){
+        this.first = null;
+        this.N = 0;
+    }
+
+    /**
+     * Added by Ex 1.3.42
+     * */
+    public Stack(Stack<Item> s){
+        this.first = new Node<Item>(s.first);
+        this.N = s.N;
+    }
+
     /**
      * Added by Ex 1.3.7
      * */
@@ -46,7 +55,7 @@ public class Stack<Item> implements Iterable<Item> {
     }
 
     private class ListIterator implements Iterator<Item> {
-        private Node current = first;
+        private Node<Item> current = first;
 
         public boolean hasNext() {
             return current != null;

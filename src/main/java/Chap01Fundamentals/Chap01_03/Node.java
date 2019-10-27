@@ -7,4 +7,11 @@ public class Node<Item> {
         this.item = v;
         this.next = null;
     }
+
+    public Node(Node<Item> n){
+        this.item = n.item;
+        if(n.next != null){
+            this.next = new Node<Item>(n.next);
+        }
+    }
 }
