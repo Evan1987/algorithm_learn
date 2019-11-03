@@ -1,5 +1,6 @@
 package Chap01Fundamentals.Chap01_03;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -9,6 +10,7 @@ import java.util.NoSuchElementException;
 public class Stack<Item> implements Iterable<Item> {
     private Node<Item> first;
     private int N;
+    private int operates;  // log times of operations of pop and push
 
     public boolean isEmpty(){
         return this.first == null;
@@ -24,12 +26,14 @@ public class Stack<Item> implements Iterable<Item> {
         this.first.item = item;
         this.first.next = oldFirst;
         this.N ++;
+        this.operates ++;
     }
 
     public Item pop(){
         Item item = this.first.item;
         this.first = this.first.next;
         this.N -- ;
+        this.operates ++;
         return item;
     }
 
@@ -54,14 +58,41 @@ public class Stack<Item> implements Iterable<Item> {
         return this.first.item;
     }
 
+    /**
+     * Added by Ex 1.3.47
+     * concat new stack at the head
+     * */
+    public void catenation(Stack<Item> that){
+        if(that.first == null) return;
+        Stack<Item> temp = new Stack<Item>(that);  // copy
+        Node last = temp.first;
+        while(last.next != null){  // move index to the tail
+            last = last.next;
+        }
+
+        last.next = this.first;  // concat this to that's tail
+        this.first = temp.first;  // resign this.first
+    }
+
+    /**
+     * Added by Ex 1.3.50
+     * Throw exception when modify items during iterations
+     * */
     private class ListIterator implements Iterator<Item> {
         private Node<Item> current = first;
+        private int count = operates;  // lock current operations
 
         public boolean hasNext() {
+            if(this.count != operates){
+                throw new ConcurrentModificationException();
+            }
             return current != null;
         }
 
         public Item next() {
+            if(this.count != operates){
+                throw new ConcurrentModificationException();
+            }
             Item item = current.item;
             current = current.next;
             return item;
