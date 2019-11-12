@@ -16,6 +16,6 @@ public class Ex18 {
 
     public static void main(String[] args) {
         int[] a = {2, 3, 5, 8, 9, 11, 9, 10};
-        System.out.println(localSmallest(a));  // 6
+        System.out.println(localSmallest(a));  // 6 no need for sort
     }
 }
