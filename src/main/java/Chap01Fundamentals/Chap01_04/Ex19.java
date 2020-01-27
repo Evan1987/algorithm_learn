@@ -60,16 +60,13 @@ class Point{
 
 
 class Offset {
-    int leftCol;
-    int rightCol;
-    int upRow;
-    int downRow;
+    private int leftCol;
+    private int rightCol;
+    private int upRow;
+    private int downRow;
 
-    int midRow;
-    int midCol;
-
-    int nRows;
-    int nCols;
+    private int midRow;
+    private int midCol;
 
     Offset(int minRow, int maxRow, int minCol, int maxCol){
         this.leftCol = minCol;
@@ -79,9 +76,6 @@ class Offset {
 
         this.midRow = (minRow + maxRow) / 2;
         this.midCol = (minCol + maxCol) / 2;
-
-        this.nRows = maxRow - minRow + 1;
-        this.nCols = maxCol - minCol + 1;
     }
 
     /**
