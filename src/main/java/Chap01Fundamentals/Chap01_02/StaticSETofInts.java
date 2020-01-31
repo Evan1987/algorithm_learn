@@ -10,9 +10,7 @@ public class StaticSETofInts {
 
         // To copy data safely
         this.a = new int[keys.length];
-        for(int i=0; i<keys.length; i++){
-            this.a[i] = keys[i];
-        }
+        System.arraycopy(keys, 0, this.a, 0, keys.length);
         Arrays.sort(this.a);
     }
 
