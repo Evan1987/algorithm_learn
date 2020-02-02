@@ -5,7 +5,7 @@ import Chap02_Sorting.Sorting;
 /**
  * 选择排序
  * 每次找出最小的元素，与前方交换
- * 与输入情况无关，n次交换，O(n^2 / 2)次比较
+ * 与输入情况无关，n次交换，O(n^2 / 2)次比较，多比较，少交换的方法
  * O(n^2)
  * */
 public class SelectionSort extends Sorting {

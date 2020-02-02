@@ -11,7 +11,7 @@ public class URandom {
     }
 
     public URandom(Long seed){
-        this.seed = seed;
+        URandom.seed = seed;
         random = new Random(seed);
     }
 
