@@ -9,7 +9,7 @@ import Chap02_Sorting.Sorting;
 public class ShellSort extends Sorting{
     private int V;
 
-    ShellSort(){
+    public ShellSort(){
         this.V = 3;
     }
 

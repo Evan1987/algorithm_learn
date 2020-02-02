@@ -2,29 +2,27 @@ package utils;
 
 import java.util.*;
 
-enum Suit {
-    SPADE(1, "\u2660"),
-    HEART(2, "\u2665"),
-    CLUB(3, "\u2663"),
-    DIAMOND(4, "\u2666");
-
-    int color;
-    String code;
-    Suit(int color, String code){
-        this.color = color;
-        this.code = code;
-    }
-}
-
-
-
-
 public class CardsDeck {
     private PlayingCard[] deck;
 
+    public enum Suit {
+        SPADE(1, "\u2660"),
+        HEART(2, "\u2665"),
+        CLUB(3, "\u2663"),
+        DIAMOND(4, "\u2666");
+
+        int color;
+        String code;
+        Suit(int color, String code){
+            this.color = color;
+            this.code = code;
+        }
+    }
+
+
     public static class PlayingCard implements Comparable<PlayingCard> {
-        int value;
-        Suit suit;
+        public int value;
+        public Suit suit;
 
         PlayingCard(int value, Suit suit){
             this.value = value;
@@ -39,8 +37,26 @@ public class CardsDeck {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof PlayingCard){
+                PlayingCard that = (PlayingCard)obj;
+                return this.value == that.value && this.suit == that.suit;
+            }
+            return false;
+        }
+
+        @Override
         public String toString() {
-            return this.suit.code + this.value;
+            String value;
+            switch(this.value){
+                case 1: value = "A"; break;
+                case 11: value = "J"; break;
+                case 12: value = "Q"; break;
+                case 13: value = "K"; break;
+                default: value = String.valueOf(this.value);
+            }
+
+            return this.suit.code + value;
         }
     }
 

@@ -21,6 +21,20 @@ public class Array {
         return sum / N;
     }
 
+    // 计算数组标准差
+    public static double std(double[] a){
+        int N = a.length;
+        double squareSum = 0;
+        double sum = 0;
+        for (double v : a) {
+            squareSum += Math.pow(v, 2.0);
+            sum += v;
+        }
+
+        double var = squareSum / N - Math.pow(sum / N, 2.0);
+        return Math.sqrt(var);
+    }
+
     // 复制数组
     public static double[] copy(double[] a){
         int N = a.length;
