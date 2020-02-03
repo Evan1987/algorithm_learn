@@ -36,6 +36,11 @@ class SortTest {
             selectionSort.sort(a);
         }
 
+        if(alg.equals("bubble")){
+            BubbleSort bubbleSort = new BubbleSort();
+            bubbleSort.sort(a);
+        }
+
         if(alg.equals("insertion")){
             InsertionSort insertionSort = new InsertionSort();
             if(method.equals("withGuard")){
@@ -78,6 +83,7 @@ public class SortCompare {
         int T = 5;
         Long seed = 2020L;
         test("selection", "", N, T, seed);                  // 83 +/- 21
+        test("bubble", "", N, T, seed);                     // 205 +/- 10
         test("insertion", "", N, T, seed);                  // 84 +/- 4
         test("insertion", "withGuard", N, T, seed);         // 95 +/- 13
         test("insertion", "no exchange", N, T, seed);       // 60 +/- 29
