@@ -1,8 +1,12 @@
 package Chap02_Sorting.Chap02_01;
 
 import Chap02_Sorting.Sorting;
+import utils.annotations.WatchTime;
+
 
 public class BubbleSort extends Sorting {
+
+    @WatchTime(methodDesc = "Bubble sort")
     @Override
     public void sort(Comparable[] a) {
         int N = a.length;

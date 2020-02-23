@@ -1,6 +1,10 @@
 package Chap02_Sorting;
 
+import utils.annotations.WatchTime;
+
 public abstract class Sorting {
+
+    @WatchTime
     public abstract void sort(Comparable[] a);
 
     public static boolean less(Comparable v, Comparable w){

@@ -1,6 +1,7 @@
 package Chap02_Sorting.Chap02_01;
 
 import Chap02_Sorting.Sorting;
+import utils.annotations.WatchTime;
 
 /**
  * 插入排序
@@ -9,6 +10,9 @@ import Chap02_Sorting.Sorting;
  * 最好： n-1次比较，0次交换
  * */
 public class InsertionSort extends Sorting {
+
+
+    @WatchTime(methodDesc = "Insertion sort default")
     @Override
     public void sort(Comparable[] a) {
         int N = a.length;
@@ -21,6 +25,7 @@ public class InsertionSort extends Sorting {
     /**
      * 规避边界测试， added by Ex2.1.24
      * */
+    @WatchTime(methodDesc = "Insertion sort with guard")
     public void sort(Comparable[] a, boolean withGuard){
         if(!withGuard){
             sort(a);
@@ -43,6 +48,7 @@ public class InsertionSort extends Sorting {
     /**
      * 取消每次昂贵的exchange操作，改为数组右移 Added by Ex2.1.25
      * */
+    @WatchTime(methodDesc = "Insertion sort without exchange")
     public void sortWithoutExchange(Comparable[] a){
         int N = a.length;
         for(int i = 1; i < N; i ++){
