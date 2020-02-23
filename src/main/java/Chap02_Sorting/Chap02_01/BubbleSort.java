@@ -15,7 +15,7 @@ public class BubbleSort extends Sorting {
             for(int i = 1; i < j; i ++){
                 if(Sorting.less(a[i], a[i - 1])){
                     Sorting.exchange(a, i, i - 1);
-                    flag = true;
+                    if(!flag) flag = true;
                 }
             }
             if(!flag) break;

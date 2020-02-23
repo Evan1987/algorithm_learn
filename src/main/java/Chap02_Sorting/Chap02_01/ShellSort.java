@@ -1,6 +1,7 @@
 package Chap02_Sorting.Chap02_01;
 
 import Chap02_Sorting.Sorting;
+import utils.annotations.WatchTime;
 
 /**
  * 希尔排序
@@ -17,6 +18,7 @@ public class ShellSort extends Sorting{
         this.V = v;
     }
 
+    @WatchTime(methodDesc = "Shell")
     @Override
     public void sort(Comparable[] a) {
         int N = a.length;

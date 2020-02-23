@@ -1,6 +1,7 @@
 package Chap02_Sorting;
 
 import Chap02_Sorting.Chap02_01.*;
+import Chap02_Sorting.Chap02_02.TopDownMergeSort;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.Arrays;
@@ -27,49 +28,57 @@ class SortTest {
         return a;
     }
 
-    private double timeTest(String alg, String method){
+    private double timeTest(SortMethodEnum alg, String method){
         Double[] a = randomInput();
         StopWatch watch = new StopWatch();
         watch.start();
-        if(alg.equals("selection")){
-            SelectionSort selectionSort = new SelectionSort();
-            selectionSort.sort(a);
-        }
 
-        if(alg.equals("bubble")){
-            BubbleSort bubbleSort = new BubbleSort();
-            bubbleSort.sort(a);
-        }
+        switch(alg){
+            case SELECTION:
+                SelectionSort selectionSort = new SelectionSort();
+                selectionSort.sort(a);
+                break;
 
-        if(alg.equals("insertion")){
-            InsertionSort insertionSort = new InsertionSort();
-            if(method.equals("withGuard")){
-                insertionSort.sort(a, true);
-            }
+            case BUBBLE:
+                BubbleSort bubbleSort = new BubbleSort();
+                bubbleSort.sort(a);
+                break;
 
-            if(method.equals("no exchange")){
-                insertionSort.sortWithoutExchange(a);
-            }
+            case INSERTION:
+                InsertionSort insertionSort = new InsertionSort();
+                if(method.equals("withGuard")){
+                    insertionSort.sort(a, true);
+                }
 
-            if(method.equals("")){
-                insertionSort.sort(a);
-            }
-        }
+                else if(method.equals("no exchange")){
+                    insertionSort.sortWithoutExchange(a);
+                }
 
-        if(alg.equals("shell")){
-            ShellSort shellSort = new ShellSort();
-            shellSort.sort(a);
-        }
+                else{
+                    insertionSort.sort(a);
+                }
+                break;
 
-        if(alg.equals("array")){
-            Arrays.sort(a);
+            case SHELL:
+                ShellSort shellSort = new ShellSort();
+                shellSort.sort(a);
+                break;
+
+            case TOP_DOWN_MERGE:
+                TopDownMergeSort topDownMergeSort = new TopDownMergeSort();
+                topDownMergeSort.sort(a);
+                break;
+
+            case QUICK:
+                Arrays.sort(a);
+                break;
         }
 
         watch.stop();
         return watch.getTime(TimeUnit.NANOSECONDS) / 1000000.0;  // ms
     }
 
-    public double[] test(String alg, String method){
+    public double[] test(SortMethodEnum alg, String method){
         double[] testLog = new double[this.T];
         for(int i = 0; i < this.T; i ++)
             testLog[i] = timeTest(alg, method);
@@ -77,27 +86,31 @@ class SortTest {
     }
 }
 
+/**
+ * Must disable {@link utils.annotations.WatchTime} function before test
+ * */
 public class SortCompare {
     public static void main(String[] args) {
         int N = 10000;
         int T = 5;
         Long seed = 2020L;
-        test("selection", "", N, T, seed);                  // 83 +/- 21
-        test("bubble", "", N, T, seed);                     // 205 +/- 10
-        test("insertion", "", N, T, seed);                  // 84 +/- 4
-        test("insertion", "withGuard", N, T, seed);         // 95 +/- 13
-        test("insertion", "no exchange", N, T, seed);       // 60 +/- 29
-        test("shell", "", N, T, seed);                      // 2.4 +/- 1.4
-        test("array", "", N, T, seed);                      // 2.5 +/- 1.1
+        test(SortMethodEnum.SELECTION, "", N, T, seed);                  // 83 +/- 21
+        test(SortMethodEnum.BUBBLE, "", N, T, seed);                     // 205 +/- 10
+        test(SortMethodEnum.INSERTION, "", N, T, seed);                  // 84 +/- 4
+        test(SortMethodEnum.INSERTION, "withGuard", N, T, seed);         // 95 +/- 13
+        test(SortMethodEnum.INSERTION, "no exchange", N, T, seed);       // 60 +/- 29
+        test(SortMethodEnum.TOP_DOWN_MERGE, "", N, T, seed);             // 3.0 +/- 1.85
+        test(SortMethodEnum.SHELL, "", N, T, seed);                      // 2.4 +/- 1.4
+        test(SortMethodEnum.QUICK, "", N, T, seed);                      // 2.5 +/- 1.1
     }
 
-    private static void test(String alg, String method, int N, int T, Long seed){
+    private static void test(SortMethodEnum alg, String method, int N, int T, Long seed){
         SortTest sortTest = new SortTest(seed, N, T);
         double[] res = sortTest.test(alg, method);
         if(method.equals("")) method = "default";
         double mean = Array.average(res);
         double std = Array.std(res);
-        System.out.printf("Tesing %d times on %d length.\n", T, N);
+        System.out.printf("Testing %d times on %d length.\n", T, N);
         System.out.printf("Alg. %s method %s: %.4f ms +/- %.4f ms\n", alg, method, mean, std);
     }
 
