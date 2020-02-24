@@ -1,34 +1,75 @@
 package Chap02_Sorting.Chap02_02;
 
-import Chap02_Sorting.MergeSorting;
+import Chap02_Sorting.*;
 import utils.annotations.WatchTime;
 
 /**
  * @author Evan
  * @date 2020/2/23 17:51
  */
-public class TopDownMergeSort extends MergeSorting {
+
+public class TopDownMergeSort extends Sorting {
+    private Sorting sorter;
+
+    public TopDownMergeSort(String type){
+        switch (type.toLowerCase()){
+            case "v1":
+                this.sorter = new TopDownMergeSortV1();
+                break;
+            default:
+                this.sorter = new TopDownMergeSortV2();
+        }
+    }
+
+    public TopDownMergeSort(){
+        this("");
+    }
 
     @WatchTime(methodDesc = "TopDown merge sort")
     @Override
     public void sort(Comparable[] a) {
-        this.initAux(a.length);
-        sort(a, 0, a.length - 1);
-    }
-
-    private static void sort(Comparable[] a, int lo, int hi){
-        if(hi <= lo) return;
-        int mid = lo + (hi - lo) / 2;
-        sort(a, lo, mid);               // sort left
-        sort(a, mid + 1, hi);        // sort right
-        merge(a, lo, mid, hi);          // merge left and right
+        this.sorter.sort(a);
     }
 
     public static void main(String[] args) {
         String[] arr = {"s", "o", "r", "t", "e", "x", "a", "m", "p", "l", "e"};
-        TopDownMergeSort topDownMergeSort = new TopDownMergeSort();
-        //test(insertionSort, arr);
-        topDownMergeSort.sort(arr);
-        for(String s: arr) System.out.print(s + " ");
+        TopDownMergeSort topDownMergeSort = new TopDownMergeSort("v2");
+        test(topDownMergeSort, arr);
+    }
+}
+
+
+
+class TopDownMergeSortV1 extends MergeSortingV1 {
+    @Override
+    public void sort(Comparable[] a) {
+        this.initAux(a.length);
+        this.sort(a, 0, a.length - 1);
+    }
+
+    private void sort(Comparable[] a, int lo, int hi){
+        if(hi <= lo) return;
+        int mid = lo + (hi - lo) / 2;
+        this.sort(a, lo, mid);               // sort left
+        this.sort(a, mid + 1, hi);        // sort right
+        this.merge(a, lo, mid, hi);          // merge left and right
+    }
+}
+
+
+class TopDownMergeSortV2 extends MergeSortingV2 {
+
+    @Override
+    public void sort(Comparable[] a) {
+        Comparable[] aux = new Comparable[a.length];
+        this.sort(a, 0, a.length - 1, aux);
+    }
+
+    public void sort(Comparable[] a, int lo, int hi, Comparable[] aux){
+        if(hi <= lo) return;
+        int mid = lo + (hi - lo) / 2;
+        this.sort(a, lo, mid, aux);
+        this.sort(a, mid + 1, hi, aux);
+        this.merge(a, lo, mid, hi, aux);
     }
 }

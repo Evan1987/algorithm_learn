@@ -11,11 +11,13 @@ public enum SortMethodEnum {
     INSERTION("insertion"),
     SHELL("shell"),
     TOP_DOWN_MERGE("top-down-merge"),
+    BOTTOM_UP_MERGE("bottom-up-merge"),
     QUICK("array"),
+
     ;
 
     private String method;
-    private SortMethodEnum(String method){
+    SortMethodEnum(String method){
         this.method = method;
     }
 }

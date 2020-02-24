@@ -4,14 +4,16 @@ package Chap02_Sorting;
  * @author Evan
  * @date 2020/2/23 17:18
  */
-public abstract class MergeSorting extends Sorting{
+
+@Deprecated
+public abstract class MergeSortingV1 extends Sorting{
 
     private static Comparable[] aux;  // helper array
 
     /**
      * merge a[lo..mid] and a[mid+1...hi], which are both already sorted
      * */
-    public static void merge(Comparable[] a, int lo, int mid, int hi){
+    public void merge(Comparable[] a, int lo, int mid, int hi){
         int i = lo, j = mid + 1;  // double index
 
         System.arraycopy(a, lo, aux, lo, hi + 1 - lo);

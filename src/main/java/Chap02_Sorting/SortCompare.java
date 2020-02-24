@@ -1,6 +1,7 @@
 package Chap02_Sorting;
 
 import Chap02_Sorting.Chap02_01.*;
+import Chap02_Sorting.Chap02_02.BottomUpMergeSort;
 import Chap02_Sorting.Chap02_02.TopDownMergeSort;
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -69,6 +70,11 @@ class SortTest {
                 topDownMergeSort.sort(a);
                 break;
 
+            case BOTTOM_UP_MERGE:
+                BottomUpMergeSort bottomUpMergeSort = new BottomUpMergeSort();
+                bottomUpMergeSort.sort(a);
+                break;
+
             case QUICK:
                 Arrays.sort(a);
                 break;
@@ -99,7 +105,8 @@ public class SortCompare {
         test(SortMethodEnum.INSERTION, "", N, T, seed);                  // 84 +/- 4
         test(SortMethodEnum.INSERTION, "withGuard", N, T, seed);         // 95 +/- 13
         test(SortMethodEnum.INSERTION, "no exchange", N, T, seed);       // 60 +/- 29
-        test(SortMethodEnum.TOP_DOWN_MERGE, "", N, T, seed);             // 3.0 +/- 1.85
+        test(SortMethodEnum.TOP_DOWN_MERGE, "", N, T, seed);              // 3.0 +/- 1.85
+        test(SortMethodEnum.BOTTOM_UP_MERGE, "", N, T, seed);             // 5.25 +/- 1.8
         test(SortMethodEnum.SHELL, "", N, T, seed);                      // 2.4 +/- 1.4
         test(SortMethodEnum.QUICK, "", N, T, seed);                      // 2.5 +/- 1.1
     }
