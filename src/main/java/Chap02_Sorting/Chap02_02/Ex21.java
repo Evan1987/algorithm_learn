@@ -16,7 +16,7 @@ public class Ex21 {
 
     }
 
-    private static <T extends Comparable> T findRepeated(T[] q1, T[] q2, T[] q3){
+    private static <T extends Comparable<? super T>> T findRepeated(T[] q1, T[] q2, T[] q3){
         ImprovedMergeSort improvedMergeSort = new ImprovedMergeSort();
         improvedMergeSort.sort(q1);
         improvedMergeSort.sort(q2);
@@ -36,7 +36,7 @@ public class Ex21 {
         return null;
     }
 
-    private static <T extends Comparable> T maxThree(T x, T y, T z){
+    private static <T extends Comparable<? super T>> T maxThree(T x, T y, T z){
         T max = x;
         if(max.compareTo(y) < 0)
             max = y;
@@ -45,7 +45,7 @@ public class Ex21 {
         return max;
     }
 
-    private static boolean less(Comparable x, Comparable y){
+    private static <T extends Comparable<? super T>> boolean less(T x, T y){
         return x.compareTo(y) < 0;
     }
 }
