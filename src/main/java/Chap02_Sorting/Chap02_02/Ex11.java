@@ -1,7 +1,6 @@
 package Chap02_Sorting.Chap02_02;
 
-import Chap02_Sorting.MergeSortingV2;
-import Chap02_Sorting.Sorting;
+import Chap02_Sorting.*;
 
 
 /**
@@ -11,7 +10,7 @@ import Chap02_Sorting.Sorting;
  */
 public class Ex11 {
     public static void main(String[] args) {
-        String[] arr = {"s", "o", "r", "t", "e", "x", "a", "m", "p", "l", "e"};
+        String[] arr = {"h", "b", "c", "d", "e", "g", "f", "a", "i"};
         ImprovedMergeSort improvedMergeSort = new ImprovedMergeSort();
         Sorting.test(improvedMergeSort, arr);
     }
@@ -19,51 +18,67 @@ public class Ex11 {
 }
 
 class ImprovedMergeSort extends MergeSortingV2 {
-    private int THRESHOLD = 7;
+    private int THRESHOLD = 4;
 
     @Override
-    public void sort(Comparable[] a) {
-        Comparable[] aux = a.clone();
-        this.sort(aux, 0, a.length - 1, a);  // 转换了 a 与 aux的角色
+    public void sort(Comparable[] input) {
+        Comparable[] b = input.clone();
+        this.sort(input, b, 0, input.length - 1);
     }
 
-    // 让 aux[lo...hi]有序
-    public void sort(Comparable[] a, int lo, int hi, Comparable[] aux){
+    /**
+     * 使用aux辅助数组让 a[lo...hi]有序
+     * */
+    public void sort(Comparable[] a, Comparable[] aux, int lo, int hi){
 
         // (1) 小数组走插入排序
-        if(hi - lo < this.THRESHOLD){
-            this.insertionSort(aux);
+        int length = hi + 1 - lo;
+        if(length <= this.THRESHOLD){
+            this.insertionSort(a, lo, hi);
             return;
         }
 
         int mid = lo + (hi - lo) / 2;
-        this.sort(aux, lo, mid, a);             // a 左半边有序
-        this.sort(aux, mid + 1, hi, a);      // a 右半边有序
-
-        // 当右侧头部比左侧尾部小才需merge，否则数组已经有序
-        if(less(a[mid + 1], a[mid])){
-            merge(a, lo, mid, hi, aux);
-        }
+        this.sort(aux, a, lo, mid);             // aux 左半边有序
+        this.sort(aux, a, mid + 1, hi);      // aux 右半边有序
+        merge(a, lo, mid, hi, aux);             // 将有序的aux数组 merge回a
     }
 
+    /**
+     * 将 aux中已排序数据 merge 到 a
+     * */
     @Override
     public void merge(Comparable[] a, int lo, int mid, int hi, Comparable[] aux){
+        // 当右侧头部不小于左侧尾部说明aux已经有序，只要从 aux copy回 a即可，不用再走for循环逐一判断
+        if(!less(aux[mid + 1], aux[mid])){
+            System.arraycopy(aux, lo, a, lo, hi + 1 - lo);
+            return;
+        }
+
         int i = lo, j = mid + 1;
 
         for(int k = lo; k <= hi; k ++){
             if(i > mid)
-                aux[k] = a[j ++];
+                a[k] = aux[j ++];
             else if (j > hi)
-                aux[k] = a[i ++];
+                a[k] = aux[i ++];
             else
-                aux[k] = less(a[j], a[i]) ? a[j ++] : a[i ++];
+                a[k] = less(aux[j], aux[i]) ? aux[j ++] : aux[i ++];
         }
     }
 
-    public void insertionSort(Comparable[] a) {
-        for(int i = 1; i < a.length; i ++){
-            for(int j = i; j > 0 && Sorting.less(a[j], a[j - 1]); j --)
-                Sorting.exchange(a, j, j - 1);
+    private void insertionSort(Comparable[] a, int lo, int hi) {
+        for(int i = lo; i <= hi; i ++){
+            for(int j = i; j > lo && less(a[j], a[j - 1]); j --)
+                exchange(a, j, j - 1);
         }
+    }
+
+    public int getTHRESHOLD() {
+        return THRESHOLD;
+    }
+
+    public void setTHRESHOLD(int THRESHOLD) {
+        this.THRESHOLD = THRESHOLD;
     }
 }
