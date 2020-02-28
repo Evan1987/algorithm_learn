@@ -8,7 +8,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import utils.URandom;
-import utils.Array;
+import utils.ArrayUtil;
 
 
 class SortTest {
@@ -115,8 +115,8 @@ public class SortCompare {
         SortTest sortTest = new SortTest(seed, N, T);
         double[] res = sortTest.test(alg, method);
         if(method.equals("")) method = "default";
-        double mean = Array.average(res);
-        double std = Array.std(res);
+        double mean = ArrayUtil.average(res);
+        double std = ArrayUtil.std(res);
         System.out.printf("Testing %d times on %d length.\n", T, N);
         System.out.printf("Alg. %s method %s: %.4f ms +/- %.4f ms\n", alg, method, mean, std);
     }

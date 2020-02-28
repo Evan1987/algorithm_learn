@@ -1,6 +1,9 @@
 package utils;
 
-public class Array {
+import java.util.*;
+import org.apache.commons.lang3.ArrayUtils;
+
+public class ArrayUtil {
 
     // 寻找最大元素
     public static double max(double[] a){
@@ -14,8 +17,8 @@ public class Array {
     // 计算数组元素平均值
     public static double average(double[] a){
         int N = a.length;
-        Double sum = 0.0;
-        for(Double x: a){
+        double sum = 0.0;
+        for(double x: a){
             sum += x;
         }
         return sum / N;
@@ -35,31 +38,35 @@ public class Array {
         return Math.sqrt(var);
     }
 
-    // 复制数组
-    public static double[] copy(double[] a){
-        int N = a.length;
-        double[] b = new double[N];
-        for(int i = 0; i < N; i++){
-            b[i] = a[i];
-        }
-        return b;
+    public static <T> void swap(T[] a, int i, int j){
+        T temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
     }
 
-    // 反转数组元素 inplaced
-    public static void reverse(double[] a){
+    // 反转数组元素 inplace
+    public static <T> void reverse(T[] a){
         int N = a.length;
         for(int i = 0; i < N / 2; i ++){
-            double temp = a[i];
-            a[i] = a[N - 1 - i];
-            a[N - 1 -i] = temp;
+            swap(a, i, N - 1 - i);
         }
+    }
+
+    /**
+     * 随机打乱数组
+     * */
+    public static <T> void shuffle(T[] a, Random rnd){
+        int N = a.length;
+        for(int i = N; i > 1; i --)
+            swap(a, i - 1, rnd.nextInt(i));
     }
 
     public static void main(String[] args){
         double[] x = {0.4, 0.6, 0.8, 0.9};
         System.out.printf("Max: %.2f, Avg: %.2f\n", max(x), average(x));
-        reverse(x);
-        for(double y: x){
+        Double[] x2 = ArrayUtils.toObject(x);
+        reverse(x2);
+        for(double y: x2){
             System.out.println(y);
         }
 
