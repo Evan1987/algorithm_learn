@@ -5,7 +5,7 @@ import Chap02_Sorting.PQ;
 /**
  * @author Evan
  * @date 2020/2/29 19:36
- * PQ based on Heap
+ * top-up PQ based on Heap
  */
 public class MaxPQ <Key extends Comparable<? super Key>> extends PQ<Key> {
 
@@ -77,7 +77,7 @@ public class MaxPQ <Key extends Comparable<? super Key>> extends PQ<Key> {
 
     public static void main(String[] args) {
         String[] arr = {"a", "b", "c", "f", "e", "d", "g"};
-        MaxPQ maxPQ = new MaxPQ<String>(10);
+        MaxPQ<String> maxPQ = new MaxPQ<>(10);
         int M = 5;
         topMTest(maxPQ, arr, M);  // e,d,c,b,a 大顶堆pop会把最大的pop掉，最后只留bottom M个，由大到小排列
     }

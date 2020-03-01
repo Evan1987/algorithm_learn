@@ -33,6 +33,10 @@ public abstract class PQ<Key extends Comparable<? super Key>> {
         return a.compareTo(b) < 0;
     }
 
+    public boolean greater(Key a, Key b){
+        return a.compareTo(b) > 0;
+    }
+
     public static <T extends Comparable<? super T>> void topMTest(PQ<T> pq, T[] inputs, int M){
         for(T x: inputs){
             pq.push(x);
@@ -41,6 +45,7 @@ public abstract class PQ<Key extends Comparable<? super Key>> {
         }
         List<T> keys = pq.toList();
         keys.forEach(key -> System.out.print(key + " "));
+        System.out.println();
     }
 
 }

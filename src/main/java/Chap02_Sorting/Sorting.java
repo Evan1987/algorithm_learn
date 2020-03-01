@@ -11,8 +11,8 @@ public abstract class Sorting {
         return v.compareTo(w) < 0;
     }
 
-    public static void exchange(Comparable[] a, int i, int j){
-        Comparable t = a[i];
+    public static void exchange(Object[] a, int i, int j){
+        Object t = a[i];
         a[i] = a[j];
         a[j] = t;
     }
