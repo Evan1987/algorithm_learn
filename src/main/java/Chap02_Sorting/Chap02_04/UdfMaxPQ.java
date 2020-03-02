@@ -7,13 +7,13 @@ import Chap02_Sorting.PQ;
  * @date 2020/2/29 19:36
  * top-up PQ based on Heap
  */
-public class MaxPQ <Key extends Comparable<? super Key>> extends PQ<Key> {
+public class UdfMaxPQ<Key extends Comparable<? super Key>> extends PQ<Key> {
 
     private Key[] pq;       // 堆数组
     private int N = 0;      // pq[0]不使用
 
     @SuppressWarnings("unchecked")
-    public MaxPQ(int n){
+    public UdfMaxPQ(int n){
         this.pq = (Key[]) new Comparable[n];
     }
 
@@ -77,8 +77,8 @@ public class MaxPQ <Key extends Comparable<? super Key>> extends PQ<Key> {
 
     public static void main(String[] args) {
         String[] arr = {"a", "b", "c", "f", "e", "d", "g"};
-        MaxPQ<String> maxPQ = new MaxPQ<>(10);
+        UdfMaxPQ<String> udfMaxPQ = new UdfMaxPQ<>(10);
         int M = 5;
-        topMTest(maxPQ, arr, M);  // e,d,c,b,a 大顶堆pop会把最大的pop掉，最后只留bottom M个，由大到小排列
+        topMTest(udfMaxPQ, arr, M);  // e,d,c,b,a 大顶堆pop会把最大的pop掉，最后只留bottom M个，由大到小排列
     }
 }
