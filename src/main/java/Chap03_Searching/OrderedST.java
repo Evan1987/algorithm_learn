@@ -1,5 +1,7 @@
 package Chap03_Searching;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author Evan
  * @date 2020/3/8 13:55
@@ -16,16 +18,20 @@ public abstract class OrderedST<K extends Comparable<? super K>, V> extends ST<K
 
     // delete the minimum key
     public void deleteMin(){
+        this.emptyCheck();
         this.delete(this.min());
     }
 
     // delete the maximum key
     public void deleteMax(){
+        this.emptyCheck();
         this.delete(this.max());
     }
 
     // the num of keys between [lo...hi]
     public int size(K lo, K hi){
+        this.nullKeyCheck(lo);
+        this.nullKeyCheck(hi);
         if(hi.compareTo(lo) < 0) return 0;
         int n = this.rank(hi) - this.rank(lo);
         if(this.contains(hi)) return  n + 1;
