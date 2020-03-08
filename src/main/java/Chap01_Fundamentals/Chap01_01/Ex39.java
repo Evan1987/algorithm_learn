@@ -1,7 +1,7 @@
 package Chap01_Fundamentals.Chap01_01;
 
 import utils.URandom;
-import utils.StdIn;
+import edu.princeton.cs.algs4.StdIn;
 import utils.BinarySearch;
 
 import java.util.Arrays;

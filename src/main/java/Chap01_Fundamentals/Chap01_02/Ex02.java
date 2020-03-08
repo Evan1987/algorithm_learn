@@ -1,6 +1,6 @@
 package Chap01_Fundamentals.Chap01_02;
 
-import utils.StdIn;
+import edu.princeton.cs.algs4.StdIn;
 
 public class Ex02 {
     public static void main(String[] args){

@@ -1,6 +1,6 @@
 package Chap01_Fundamentals.Chap01_01;
 
-import utils.StdIn;
+import edu.princeton.cs.algs4.StdIn;
 
 public class Ex30 {
     private static int gcd(int p, int q){
