@@ -274,6 +274,19 @@ public class BST<Key extends Comparable<? super Key>, Value> extends OrderedST<K
         return 1 + Math.max(this.height(x.left), this.height(x.right));
     }
 
+    // Added by Ex 3.2.7
+    public double avgCompares(){
+        return ((double) this.depthSum(this.root, 1)) / this.root.N;
+    }
+
+    /**
+     * Sum over all the tree nodes' (include self) depth
+     * */
+    private int depthSum(Node x, int depth){
+        if(x == null) return 0;
+        return this.depthSum(x.left, depth + 1) + this.depthSum(x.right, depth + 1) + depth;
+    }
+
     /**
      * Return the keys by the level order, breadth-first-search
      * */
