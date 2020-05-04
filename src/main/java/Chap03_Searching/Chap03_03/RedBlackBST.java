@@ -105,8 +105,89 @@ public class RedBlackBST<Key extends Comparable<? super Key>, Value> extends Ord
     /***************************************************************************
      *  Red-black tree deletion.
      ***************************************************************************/
-    public void delete(Key key){
+    public void deleteMin(){
+        this.emptyCheck();
+        if(!isRed(root.left) && !isRed(root.right))
+            root.color = RED;                       // 方便利用 flipColors构造临时4节点
 
+        this.root = deleteMin(this.root);
+        if(!isEmpty()) root.color = BLACK;
+    }
+
+    // delete the k-v pair with the minimum key rooted at `h`
+    private Node deleteMin(Node h){
+        if(h.left == null) return null;  // `h` is just the minimum node
+        if(!isRed(h.left) && !isRed(h.left.left))   // 左子节点为 2-节点（既不与父节点成为 3-节点，又不与子节点成为 3-节点），此为 2-节点判断条件
+            h = moveRedLeft(h);                     // 将左子结点变为 3-节点
+
+        h.left = deleteMin(h.left);                 // 继续在左侧删除
+        return balance(h);                           // 向上回溯分解路径上的临时 4节点
+    }
+
+    public void deleteMax(){
+        this.emptyCheck();
+        if(!isRed(root.left) && !isRed(root.right))
+            root.color = RED;                       // 方便利用 flipColors构造临时4节点
+
+        this.root = deleteMax(this.root);
+        if(!isEmpty()) root.color = BLACK;
+    }
+
+    private Node deleteMax(Node h){
+        if(isRed(h.left))
+            h = rotateRight(h);                         // 让右子节点变为 3节点
+
+        if(h.right == null)
+            return null;
+
+        if(!isRed(h.right) && !isRed(h.right.left))     // 右子节点为 2-节点（同 deleteMin）
+            h = moveRedRight(h);                        // 将右子结点变为 3-节点
+
+        h.right = deleteMax(h.right);                   // 继续在右侧删除
+        return balance(h);                              // 向上回溯分解路径上的临时 4节点
+    }
+
+
+    // Remove the specified key if the key is in the tree
+    public void delete(Key key){
+        this.nullKeyCheck(key);
+        if(!contains(key)) return;
+
+        if(!isRed(root.left) && !isRed(root.right))
+            root.color = RED;
+
+        root = delete(root, key);
+        if(!isEmpty()) root.color = BLACK;
+    }
+
+    /**
+     * Delete the k-v pair with the given key rooted at `h`
+     * */
+    private Node delete(Node h, Key key){
+        // assert get(h, key) != null
+        if(key.compareTo(h.key) < 0){
+            // the deleting key is on the left
+            if(!isRed(h.left) && !isRed(h.left.left))
+                h = moveRedLeft(h);
+            h.left = delete(h.left, key);
+        }
+        else{
+            if(isRed(h.left))
+                h = rotateRight(h);
+            if(key.compareTo(h.key) == 0 && h.right == null)
+                return null;
+            if(!isRed(h.right) && !isRed(h.right.left))
+                h = moveRedRight(h);
+            if(key.compareTo(h.key) == 0){
+                Node x = min(h.right);
+                h.key = x.key;
+                h.val = x.val;
+                h.right = deleteMin(h.right);
+            }
+            else
+                h.right = delete(h.right, key);
+        }
+        return balance(h);
     }
 
     /***************************************************************************
@@ -146,6 +227,61 @@ public class RedBlackBST<Key extends Comparable<? super Key>, Value> extends Ord
         h.color = !h.color;   // 红链接向上传
         h.left.color = !h.left.color;
         h.right.color = !h.right.color;
+    }
+
+    /**
+     * Assuming that `h` is red and h.left and h.left.left are black, make h.left or one of its children red.
+     * 就是让左子节点为三节点（或与父节点 h 成为 3-节点，或与子节点成为 3-节点）
+     * */
+    private Node moveRedLeft(Node h){
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.left) && !isRed(h.left.left);
+        flipColors(h);  // h is black, h.left is red and h.right has opposite color.
+        if(isRed(h.right.left)){              // 右子节点为 3-节点 -> 让左子节点与其子节点成为 3-节点
+            h.right = rotateRight(h.right);  // 右旋，将 h.right.left移至 h.right
+            h = rotateLeft(h);               // 左旋，
+            flipColors(h);
+        }
+        // 否则 h 为 4-节点（左右链接均为红链接）
+        return h;
+    }
+
+    /**
+     * Assuming that `h` is red and both h.right and h.right.left are black, make h.right or one of its children red.
+     * 就是让右子节点为三节点（或与父节点 h 成为 3-节点，或与子节点成为 3-节点）
+     * */
+    private Node moveRedRight(Node h){
+        // assert (h != null);
+        // assert isRed(h) && !isRed(h.right) && !isRed(h.right.left);
+        flipColors(h);
+        if(isRed(h.left.left)){ // 左子节点为 3-节点 -> 让右子节点与其子节点成为 3-节点
+            h = rotateRight(h);
+            flipColors(h);
+        }
+        // 否则 h 为 4-节点（左右链接均为红链接）
+        return h;
+    }
+
+    // restore tree invariant
+    private Node balance(Node h){
+        if(isRed(h.right))                          h = rotateLeft(h);
+        if(isRed(h.left) && isRed(h.left.left))     h = rotateRight(h);
+        if(isRed(h.left) && isRed(h.right))         flipColors(h);
+        h.size = size(h.left) + size(h.right) + 1;
+        return h;
+    }
+
+    /***************************************************************************
+     *  Utility functions.
+     ***************************************************************************/
+    public int height(){
+        return height(this.root);
+    }
+
+    // Return the height of the BST rooted at node x.
+    private int height(Node x){
+        if(x == null) return -1;
+        return 1 + Math.max(height(x.left), height(x.right));
     }
 
 
