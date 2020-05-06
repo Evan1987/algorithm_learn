@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class SeparateChainingHashST<Key, Value> extends ST<Key, Value> {
     private static final int INIT_CAPACITY = 4;
-    private int N;  // 键值对总数123
+    private int N;  // 键值对总数
     private int M;  // 散列表大小
     private SequentialSearchST<Key, Value>[] st;
 
