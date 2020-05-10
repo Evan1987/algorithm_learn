@@ -2,12 +2,13 @@ package Chap04_Graph.Chap04_01;
 
 import Chap01_Fundamentals.Chap01_03.Queue;
 import Chap04_Graph.Graph;
-import Chap04_Graph.Search;
 
 /**
  * @author Evan
  * @date 2020/5/9 22:09
+ * 深度优先搜索
  */
+@SuppressWarnings("WeakerAccess")
 public class DepthFirstSearch extends Search {
     private boolean[] marked;
     private int count;
@@ -56,6 +57,6 @@ public class DepthFirstSearch extends Search {
         Graph g = Graph.generateGraph();
         System.out.println(g.degree(0));
         DepthFirstSearch search = new DepthFirstSearch(g, 0);
-        Search.test(search);
+        search.test();
     }
 }

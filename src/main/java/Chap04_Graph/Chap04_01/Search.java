@@ -1,10 +1,14 @@
-package Chap04_Graph;
+package Chap04_Graph.Chap04_01;
+
+import Chap04_Graph.Graph;
 
 /**
  * @author Evan
  * @date 2020/5/9 21:55
+ * 联通搜索问题 API
  */
-public abstract class Search {
+@SuppressWarnings("WeakerAccess")
+public abstract class Search implements GraphProblem{
     private Graph graph;
     private final int source;
 
@@ -33,13 +37,19 @@ public abstract class Search {
             throw new IllegalArgumentException("vertex " + v + " is invalid!");
     }
 
-    public static void test(Search search){
-        for(int v = 0; v < search.G().V(); v ++)
-            if(search.marked(v))
+    @Override
+    public String problemDesc() {
+        return "Find the connectivity of specified vertex.";
+    }
+
+    @Override
+    public void test(){
+        for(int v = 0; v < this.G().V(); v ++)
+            if(this.marked(v))
                 System.out.print(v + " ");
 
         System.out.println("\n*********");
-        if(search.count() != search.G().V())
+        if(this.count() != this.G().V())
             System.out.println("Not connected");
         else
             System.out.println("connected");

@@ -7,9 +7,10 @@ import java.util.*;
  * @author Evan
  * @date 2020/5/8 21:54
  */
+@SuppressWarnings("WeakerAccess")
 public class Graph {
     private final int V;                  // num of vertices
-    private int E = 0;                  // num of edges
+    private int E;                  // num of edges
     private List<Integer>[] adj;    // adjacent table, save the vertices for each vertex
 
     public Graph(int V) {
@@ -75,7 +76,9 @@ public class Graph {
     private void addEdge(int v, int w){
         this.E ++;
         this.adj[v].add(w);
-        this.adj[w].add(v);
+        if(v != w){     // 防止自环时重复
+            this.adj[w].add(v);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -98,9 +101,33 @@ public class Graph {
         return this.adj[v];
     }
 
+    // 顶点 v的度数
     public int degree(int v){
         validateVertex(v);
         return this.adj[v].size();
+    }
+
+    // 图的最大度数
+    public int maxDegree(){
+        int max = 0;
+        for(int v = 0; v < this.V(); v ++)
+            if(this.degree(v) > max)
+                max = this.degree(v);
+        return max;
+    }
+
+    // 图的平均度数
+    public double avgDegree(){
+        return 2.0 * this.E() / this.V();
+    }
+
+    // 自环的个数
+    public int numOfSelfLoops(){
+        int count = 0;
+        for(int v = 0; v < this.V(); v ++)
+            for(int w: this.adj(v))
+                if(w == v) count ++;
+        return count;
     }
 
     public static Graph generateGraph(){
