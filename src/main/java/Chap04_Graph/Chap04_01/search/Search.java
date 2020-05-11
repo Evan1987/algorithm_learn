@@ -1,5 +1,6 @@
-package Chap04_Graph.Chap04_01;
+package Chap04_Graph.Chap04_01.search;
 
+import Chap04_Graph.Chap04_01.GraphProblem;
 import Chap04_Graph.Graph;
 
 /**
@@ -8,7 +9,7 @@ import Chap04_Graph.Graph;
  * 联通搜索问题 API
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class Search implements GraphProblem{
+public abstract class Search implements GraphProblem {
     private Graph graph;
     private final int source;
 
@@ -16,6 +17,7 @@ public abstract class Search implements GraphProblem{
     public Search(Graph G, int s){
         this.graph = G;
         this.source = s;
+        this.validateVertex(s);
     }
 
     // 判断顶点 V是否与S联通
@@ -30,11 +32,6 @@ public abstract class Search implements GraphProblem{
 
     public int getSource(){
         return this.source;
-    }
-
-    public void validateVertex(int v){
-        if(v <0 || v >= this.G().V())
-            throw new IllegalArgumentException("vertex " + v + " is invalid!");
     }
 
     @Override

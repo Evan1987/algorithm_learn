@@ -73,7 +73,7 @@ public class Graph {
         if(v < 0 || v >= this.V) throw new IllegalArgumentException("vertex " + v + " should be between 0 and " + (this.V - 1));
     }
 
-    private void addEdge(int v, int w){
+    public void addEdge(int v, int w){
         this.E ++;
         this.adj[v].add(w);
         if(v != w){     // 防止自环时重复

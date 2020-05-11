@@ -1,6 +1,5 @@
-package Chap04_Graph.Chap04_01;
+package Chap04_Graph.Chap04_01.paths;
 
-import Chap01_Fundamentals.Chap01_03.Stack;
 import Chap04_Graph.Graph;
 
 /**
@@ -8,14 +7,14 @@ import Chap04_Graph.Graph;
  * @date 2020/5/10 22:24
  */
 @SuppressWarnings("WeakerAccess")
-public class DepthFirstPaths extends Paths {
+public class DepthFirstPathsImpl extends AbstractGraphPaths {
 
     private boolean[] marked;
     // 一棵树, index为起点， value为终点。 example: edgeTo[2] = 0，说明从 2 可以到 0
     // 记录了从任意节点回到 source的路径
     private int[] edgeTo;
 
-    public DepthFirstPaths(Graph G, int s) {
+    public DepthFirstPathsImpl(Graph G, int s) {
         super(G, s);
         this.marked = new boolean[G.V()];
         this.edgeTo = new int[G.V()];
@@ -32,23 +31,18 @@ public class DepthFirstPaths extends Paths {
     }
 
     @Override
-    public boolean hasPath(int v) {
-        return this.marked[v];  // 与search问题相同
+    public int[] getEdgeTo() {
+        return this.edgeTo;
     }
 
     @Override
-    public Iterable<Integer> pathTo(int v) {
-        if(!this.hasPath(v)) return null;
-        Stack<Integer> path = new Stack<>();
-        for(int x = v; x != this.getSource(); x = this.edgeTo[x])
-            path.push(x);
-        path.push(this.getSource());
-        return path;
+    public boolean[] getMarked() {
+        return this.marked;
     }
 
     public static void main(String[] args) {
         Graph g = Graph.generateGraph();
-        DepthFirstPaths search = new DepthFirstPaths(g, 0);
+        DepthFirstPathsImpl search = new DepthFirstPathsImpl(g, 0);
         search.test();
     }
 }

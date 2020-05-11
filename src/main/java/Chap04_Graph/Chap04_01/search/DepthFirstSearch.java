@@ -1,4 +1,4 @@
-package Chap04_Graph.Chap04_01;
+package Chap04_Graph.Chap04_01.search;
 
 import Chap01_Fundamentals.Chap01_03.Queue;
 import Chap04_Graph.Graph;

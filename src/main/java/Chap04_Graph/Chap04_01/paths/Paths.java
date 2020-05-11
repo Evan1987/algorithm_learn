@@ -1,5 +1,6 @@
-package Chap04_Graph.Chap04_01;
+package Chap04_Graph.Chap04_01.paths;
 
+import Chap04_Graph.Chap04_01.GraphProblem;
 import Chap04_Graph.Graph;
 
 /**
@@ -8,7 +9,7 @@ import Chap04_Graph.Graph;
  * 路径寻找问题 API
  */
 @SuppressWarnings("WeakerAccess")
-public abstract class Paths implements GraphProblem{
+public abstract class Paths implements GraphProblem {
     private Graph graph;
     private final int source;
 
@@ -16,6 +17,7 @@ public abstract class Paths implements GraphProblem{
     public Paths(Graph G, int s){
         this.graph = G;
         this.source = s;
+        this.validateVertex(s);
     }
 
     public abstract boolean hasPath(int v);
@@ -27,6 +29,11 @@ public abstract class Paths implements GraphProblem{
 
     public int getSource(){
         return this.source;
+    }
+
+    @Override
+    public String problemDesc() {
+        return "Find the path between the source and specified vertex";
     }
 
     @Override
