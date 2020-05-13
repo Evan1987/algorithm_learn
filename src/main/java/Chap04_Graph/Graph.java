@@ -9,14 +9,15 @@ import java.util.*;
  */
 @SuppressWarnings("WeakerAccess")
 public class Graph {
-    private int V;                  // num of vertices
-    private int E;                  // num of edges
-    private List<Integer>[] adj;    // adjacent table, save the vertices for each vertex
+    protected final static int INIT_SIZE = 4;
+    protected int V;                  // num of vertices
+    protected int E;                  // num of edges
+    protected List<Integer>[] adj;    // adjacent table, save the vertices for each vertex
 
     public Graph(){
         this.V = 0;
         this.E = 0;
-        this.adj = initAdj(4);
+        this.adj = initAdj(INIT_SIZE);
     }
 
     public Graph(int V) {
@@ -75,12 +76,12 @@ public class Graph {
         if(V < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
     }
 
-    private void validateVertex(int v){
+    protected void validateVertex(int v){
         if(v < 0 || v >= this.V) throw new IllegalArgumentException("vertex " + v + " should be between 0 and " + (this.V - 1));
     }
 
-    // extend adj array
-    private void extendAdj(int V){
+    // extend array
+    protected void extend(int V){
         List<Integer>[] temp = this.initAdj(V);
         for(int i = 0; i < this.adj.length; i ++)
             if(this.adj[i] != null) temp[i] = this.adj[i];
@@ -88,25 +89,28 @@ public class Graph {
     }
 
     // add a pair into adj matrix
-    private void addAdj(int target, int adjacent){
-        if(this.adj[target] == null){
-            this.adj[target] = new ArrayList<Integer>(){{
-                add(adjacent);
-            }};
+    protected void addAdj(int target, int adjacent){
+        if(this.adj[target] == null) {
+            this.adj[target] = new ArrayList<>();
             this.V ++;
         }
+        if(this.adj[adjacent] == null){
+            this.adj[adjacent] = new ArrayList<>();
+            this.V ++;
+        }
+        this.adj[target].add(adjacent);
     }
 
     public void addEdge(int v, int w){
         this.E ++;
-        if(Math.max(v, w) >= this.adj.length) extendAdj(Math.max(v, w) + 1);
+        if(Math.max(v, w) >= this.adj.length) extend(Math.max(v, w) + 1);
 
         this.addAdj(v, w);
         if(v != w) this.addAdj(w, v);       // 防止自环时重复
     }
 
     @SuppressWarnings("unchecked")
-    private List<Integer>[] initAdj(int V){
+    protected List<Integer>[] initAdj(int V){
         return (List<Integer>[]) new ArrayList[V];
     }
 
@@ -120,14 +124,13 @@ public class Graph {
 
     public Iterable<Integer> adj(int v){
         validateVertex(v);
-        return this.adj[v] == null ? new ArrayList<>() : this.adj[v];
+        return this.adj[v];
     }
 
     // 顶点 v的度数
     public int degree(int v){
         validateVertex(v);
-        List<Integer> vertices = this.adj[v];
-        return vertices == null ? 0 : vertices.size();
+        return this.adj[v].size();
     }
 
     // 图的最大度数
@@ -168,6 +171,6 @@ public class Graph {
 
     public static void main(String[] args) {
         Graph g = Graph.generateGraph();
-        System.out.println(g.V);
+        System.out.println(g.V);  // 6
     }
 }
