@@ -10,10 +10,10 @@ import Chap04_Graph.Graph;
  */
 @SuppressWarnings("WeakerAccess")
 public class DepthFirstCC extends ConnectedComponent implements VertexMarkSearch {
-    private boolean[] marked;
-    private int[] id;               // vertex -> component
-    private int[] componentSize;    // component -> num of vertices
-    private int componentCount;
+    protected boolean[] marked;
+    protected int[] id;               // vertex -> component
+    protected int[] componentSize;    // component -> num of vertices
+    protected int componentCount;
 
     public DepthFirstCC(Graph G){
         super(G);

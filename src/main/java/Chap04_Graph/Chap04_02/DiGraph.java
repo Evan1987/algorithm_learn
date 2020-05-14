@@ -18,6 +18,7 @@ public class DiGraph extends Graph {
 
     public DiGraph(int V){
         super(V);
+        this.inDegree = new int[V];
     }
 
     public DiGraph(DiGraph G){
@@ -59,8 +60,11 @@ public class DiGraph extends Graph {
     public DiGraph reverse(){
         DiGraph R = new DiGraph(this.V);
         for(int v = 0; v < this.V; v ++){
-            for(int w: this.adj(v))
+            if(R.adj[v] == null) R.adj[v] = new ArrayList<>();
+            for(int w: this.adj(v)){
+                if(R.adj[w] == null) R.adj[w] = new ArrayList<>();
                 R.addEdge(w, v);
+            }
         }
         return R;
     }

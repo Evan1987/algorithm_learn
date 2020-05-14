@@ -27,6 +27,13 @@ public class DirectedCycle extends DepthFirstCycle {
         this(initOnStack(G.V()), G);
     }
 
+    // 有向图的平行边检查并不简单，所以此处覆盖
+    @Override
+    protected Iterable<Integer> getParallelEdges(Graph G){
+        System.out.println("There's no parallel edges check any more for DG");
+        return null;
+    }
+
     @Override
     protected void dfs(Graph G, int u, int v) {
         onStack[v] = true;
@@ -39,8 +46,8 @@ public class DirectedCycle extends DepthFirstCycle {
                 this.edgeTo[w] = v;
                 dfs(G, v, w);
             }
-            // Found the cycle, but disregard the reverse of edge v-w
-            else if(w != u && onStack[w]){
+            // Found the cycle, the reverse edge is considered
+            else if(onStack[w]){
                 Deque<Integer> cycle = new ArrayDeque<>();
                 // 回溯
                 for(int x = v; x != w; x = this.edgeTo[x])

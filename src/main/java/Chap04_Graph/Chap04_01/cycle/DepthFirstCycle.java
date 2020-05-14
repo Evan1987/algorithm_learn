@@ -19,12 +19,12 @@ public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
 
     public DepthFirstCycle(Graph graph){
         this.graph = graph;
-        this.cycle = Cycle.getSelfLoop(graph);
+        this.cycle = this.getSelfLoop(graph);
         if(cycle != null) {
             System.out.println("There's self loop!");
             return;
         }
-        this.cycle = Cycle.getParallelEdges(graph);
+        this.cycle = this.getParallelEdges(graph);
         if(cycle != null){
             System.out.println("There's parallel edges!");
             return;

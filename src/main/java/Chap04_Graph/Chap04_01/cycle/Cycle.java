@@ -18,7 +18,7 @@ public abstract class Cycle implements GraphProblem {
     public abstract Iterable<Integer> getCycle();   // return a cycle in the graph
 
     // 检查是否有自环，并返回一个自环
-    public static Iterable<Integer> getSelfLoop(Graph G){
+    protected Iterable<Integer> getSelfLoop(Graph G){
         for(int v = 0; v < G.V(); v ++){
             for(int w: G.adj(v)){
                 if(v == w)
@@ -32,7 +32,7 @@ public abstract class Cycle implements GraphProblem {
     }
 
     // 检查是否有平行边，并返回一个平行边
-    public static Iterable<Integer> getParallelEdges(Graph G){
+    protected Iterable<Integer> getParallelEdges(Graph G){
         boolean[] marked = new boolean[G.V()];
         for(int v = 0; v < G.V(); v ++){
 
