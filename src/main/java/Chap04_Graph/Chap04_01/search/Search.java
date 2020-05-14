@@ -1,6 +1,6 @@
 package Chap04_Graph.Chap04_01.search;
 
-import Chap04_Graph.Chap04_01.GraphProblem;
+import Chap04_Graph.GraphProblem;
 import Chap04_Graph.Graph;
 
 /**
@@ -10,8 +10,8 @@ import Chap04_Graph.Graph;
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class Search implements GraphProblem {
-    private Graph graph;
-    private final int source;
+    protected Graph graph;
+    protected final int source;
 
     // 给定图和顶点 S
     public Search(Graph G, int s){

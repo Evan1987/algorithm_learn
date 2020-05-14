@@ -1,9 +1,10 @@
 package Chap04_Graph.Chap04_01.paths;
 
 import Chap01_Fundamentals.Chap01_03.Stack;
-import Chap04_Graph.Chap04_01.VertexMarkSearch;
+import Chap04_Graph.VertexMarkSearch;
 import Chap04_Graph.Graph;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class AbstractGraphPaths extends Paths implements VertexMarkSearch {
 
     public abstract int[] getEdgeTo();

@@ -9,10 +9,10 @@ import Chap04_Graph.Graph;
 @SuppressWarnings("WeakerAccess")
 public class DepthFirstPathsImpl extends AbstractGraphPaths {
 
-    private boolean[] marked;
+    protected boolean[] marked;
     // 一棵树, index为起点， value为终点。 example: edgeTo[2] = 0，说明从 2 可以到 0
     // 记录了从任意节点回到 source的路径
-    private int[] edgeTo;
+    protected int[] edgeTo;
 
     public DepthFirstPathsImpl(Graph G, int s) {
         super(G, s);

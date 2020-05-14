@@ -1,4 +1,4 @@
-package Chap04_Graph.Chap04_01;
+package Chap04_Graph;
 
 import Chap04_Graph.Graph;
 

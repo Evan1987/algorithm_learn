@@ -1,6 +1,6 @@
 package Chap04_Graph.Chap04_01.cycle;
 
-import Chap04_Graph.Chap04_01.GraphProblem;
+import Chap04_Graph.GraphProblem;
 import Chap04_Graph.Graph;
 
 import java.util.Stack;
@@ -12,11 +12,7 @@ import java.util.Stack;
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class Cycle implements GraphProblem {
-    private Graph graph;
-
-    public Cycle(Graph graph){
-        this.graph = graph;
-    }
+    protected Graph graph;
 
     public abstract boolean hasCycle();
     public abstract Iterable<Integer> getCycle();   // return a cycle in the graph

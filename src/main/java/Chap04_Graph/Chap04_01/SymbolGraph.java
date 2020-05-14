@@ -13,6 +13,7 @@ import java.util.Map;
  * @author Evan
  * @date 2020/5/12 12:01
  */
+@SuppressWarnings("WeakerAccess")
 public class SymbolGraph {
     private Map<String, Integer> st;
     private Map<Integer, String> inverseST;

@@ -10,8 +10,8 @@ import Chap04_Graph.Graph;
  */
 @SuppressWarnings("WeakerAccess")
 public class DepthFirstSearch extends Search {
-    private boolean[] marked;
-    private int count;
+    protected boolean[] marked;
+    protected int count;
 
     public DepthFirstSearch(Graph G, int s) {
         super(G, s);
@@ -19,7 +19,7 @@ public class DepthFirstSearch extends Search {
         this.dfs(G, s);
     }
 
-    private void dfs(Graph G, int v){
+    protected void dfs(Graph G, int v){
         marked[v] = true;
         this.count ++;
         for(int w: G.adj(v))

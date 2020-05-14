@@ -1,22 +1,24 @@
 package Chap04_Graph.Chap04_01.cycle;
 
-import Chap04_Graph.Chap04_01.VertexMarkSearch;
+import Chap01_Fundamentals.Chap01_03.Stack;
+import Chap04_Graph.VertexMarkSearch;
 import Chap04_Graph.Graph;
-import java.util.Stack;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * @author Evan
  * @date 2020/5/11 17:09
  * 使用深度优先判定图是否含有环
  */
-@SuppressWarnings("WeakerAccess")
 public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
-    private boolean[] marked;
-    private int[] edgeTo;
-    private Iterable<Integer> cycle;
+    protected boolean[] marked;
+    protected int[] edgeTo;
+    protected Iterable<Integer> cycle;
 
     public DepthFirstCycle(Graph graph){
-        super(graph);
+        this.graph = graph;
         this.cycle = Cycle.getSelfLoop(graph);
         if(cycle != null) {
             System.out.println("There's self loop!");
@@ -31,11 +33,11 @@ public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
         this.marked = new boolean[graph.V()];
         this.edgeTo = new int[graph.V()];
         for(int v = 0; v < graph.V(); v ++)
-            if(!this.marked[v]) dfs(graph, -1, v);
+            if(!this.marked[v] && cycle == null) dfs(graph, -1, v);
     }
 
     // u: the start, v: the target
-    private void dfs(Graph G, int u, int v){
+    protected void dfs(Graph G, int u, int v){
         this.marked[v] = true;
         for(int w: G.adj(v)){
             // short circuit if cycle already found
@@ -47,12 +49,12 @@ public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
             }
             // Found the cycle, but disregard the reverse of edge v-w
             else if(w != u){
-                Stack<Integer> cycle = new Stack<Integer>();
+                Deque<Integer> cycle = new ArrayDeque<>();
                 // 回溯
                 for(int x = v; x != w; x = this.edgeTo[x])
-                    cycle.add(x);
-                cycle.add(w);
-                cycle.add(v);
+                    cycle.push(x);
+                cycle.push(w);
+                cycle.push(v);
                 this.cycle = cycle;
                 return;
             }

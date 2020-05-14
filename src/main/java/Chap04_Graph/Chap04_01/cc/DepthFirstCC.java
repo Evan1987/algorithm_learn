@@ -1,6 +1,6 @@
 package Chap04_Graph.Chap04_01.cc;
 
-import Chap04_Graph.Chap04_01.VertexMarkSearch;
+import Chap04_Graph.VertexMarkSearch;
 import Chap04_Graph.Graph;
 
 /**

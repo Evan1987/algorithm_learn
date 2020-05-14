@@ -1,6 +1,6 @@
 package Chap04_Graph.Chap04_01.cc;
 
-import Chap04_Graph.Chap04_01.GraphProblem;
+import Chap04_Graph.GraphProblem;
 import Chap04_Graph.Graph;
 
 import java.util.ArrayList;

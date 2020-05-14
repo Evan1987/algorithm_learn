@@ -1,9 +1,14 @@
 package Chap04_Graph.Chap04_02;
 
 import Chap04_Graph.Graph;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Directed Graph
  * */
+@SuppressWarnings("WeakerAccess")
 public class DiGraph extends Graph {
     protected int[] inDegree = new int[INIT_SIZE];
 
@@ -60,17 +65,28 @@ public class DiGraph extends Graph {
         return R;
     }
 
-    public static void main(String[] args) {
-        DiGraph g = new DiGraph();
-        g.addEdge(0, 1); g.addEdge(0, 5); g.addEdge(2, 0);
-        g.addEdge(2, 3); g.addEdge(3, 5); g.addEdge(3, 2);
-        g.addEdge(4, 3); g.addEdge(4, 2); g.addEdge(5, 4);
-        g.addEdge(6, 0); g.addEdge(6, 4); g.addEdge(6, 9);
-        g.addEdge(7, 6); g.addEdge(7, 8); g.addEdge(8, 7);
-        g.addEdge(8, 9); g.addEdge(9, 10); g.addEdge(9, 11);
-        g.addEdge(10, 12); g.addEdge(11, 4); g.addEdge(11, 12);
-        g.addEdge(12, 9);
+    public static String[] exampleEdges(){
+        return new String[]{
+                "0->1", "0->5", "2->0", "2->3", "3->5", "3->2", "4->3", "4->2",
+                "5->4", "6->0", "6->4", "6->9", "7->6", "7->8", "8->7", "8->9",
+                "9->10", "9->11", "10->12", "11->4", "11->12", "12->9"};
+    }
 
+    /**
+     * Generate a sample Directed Graph
+     */
+    public static DiGraph generateGraph(){
+        DiGraph g = new DiGraph();
+        for(String edge: exampleEdges()){
+            String[] points = edge.split("->");
+            g.addEdge(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
+        }
+        return g;
+    }
+
+    public static void main(String[] args) {
+
+        DiGraph g = DiGraph.generateGraph();
         System.out.println("Num of total vertices: " + g.V());
 
         for(int v = 0; v < g.V(); v ++){
