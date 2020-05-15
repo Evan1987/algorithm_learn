@@ -1,6 +1,9 @@
-package Chap04_Graph;
+package Chap04_Graph.Chap04_01;
 
+import Chap04_Graph.AbstractGraph;
 import edu.princeton.cs.algs4.In;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.*;
 
 /**
@@ -8,23 +11,38 @@ import java.util.*;
  * @date 2020/5/8 21:54
  */
 @SuppressWarnings("WeakerAccess")
-public class Graph {
+public class Graph extends AbstractGraph {
     protected final static int INIT_SIZE = 4;
-    protected int V;                  // num of vertices
-    protected int E;                  // num of edges
-    protected List<Integer>[] adj;    // adjacent table, save the vertices for each vertex
 
     public Graph(){
-        this.V = 0;
-        this.E = 0;
-        this.adj = initAdj(INIT_SIZE);
+        super();
     }
 
-    public Graph(int V) {
-        check(V);
-        this.V = V;
+    public Graph(int V){
+        super(V);
+    }
+
+    public Graph(In in){
+        super(in);
+    }
+
+    public Graph(Graph g){
+        super(g);
+    }
+
+    @Override
+    protected void nullInit() {
+        this.vertices = new HashSet<>(INIT_SIZE);
         this.E = 0;
-        this.adj = initAdj(V);
+        this.adj = initListArray(INIT_SIZE);
+    }
+
+    @Override
+    protected void initWithV(int V) {
+        if(V < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
+        this.vertices = new HashSet<>(INIT_SIZE);
+        this.E = 0;
+        this.adj = initListArray(V);
     }
 
     /**
@@ -37,13 +55,14 @@ public class Graph {
      * #vk #vt\n
      * ...
      * */
-    public Graph(In in){
+    @Override
+    protected void initWithInput(In in) {
         if(in == null) throw new IllegalArgumentException("Input stream is null");
         try{
+            this.vertices = new HashSet<>(INIT_SIZE);
             int V = in.readInt();
             check(V);
-            this.V = V;
-            this.adj = initAdj(V);
+            this.adj = initListArray(V);
 
             int E = in.readInt();
             if(E < 0) throw new IllegalArgumentException("Number of edges must be non-negative");
@@ -61,12 +80,13 @@ public class Graph {
         }
     }
 
-    public Graph(Graph G){
-        this.V = G.V();
+    @Override
+    protected void copyGraph(AbstractGraph G) {
+        this.vertices = G.getVertices();
         this.E = G.E();
-        this.adj = this.initAdj(this.V);
+        this.adj = initListArray(G.V());
 
-        for(int v = 0; v < this.V; v ++){
+        for(int v = 0; v < G.V(); v ++){
             for(int w: G.adj(v))
                 this.adj[v].add(w);
         }
@@ -77,30 +97,24 @@ public class Graph {
     }
 
     protected void validateVertex(int v){
-        if(v < 0 || v >= this.V) throw new IllegalArgumentException("vertex " + v + " should be between 0 and " + (this.V - 1));
+        if(v < 0 || v >= this.V()) throw new IllegalArgumentException("vertex " + v + " should be between 0 and " + (this.V() - 1));
     }
 
     // extend array
     protected void extend(int V){
-        List<Integer>[] temp = this.initAdj(V);
-        for(int i = 0; i < this.adj.length; i ++)
-            if(this.adj[i] != null) temp[i] = this.adj[i];
+        List<Integer>[] temp = initListArray(V);
+        System.arraycopy(this.adj, 0, temp, 0, this.adj.length);
         this.adj = temp;
     }
 
     // add a pair into adj matrix
     protected void addAdj(int target, int adjacent){
-        if(this.adj[target] == null) {
-            this.adj[target] = new ArrayList<>();
-            this.V ++;
-        }
-        if(this.adj[adjacent] == null){
-            this.adj[adjacent] = new ArrayList<>();
-            this.V ++;
-        }
+        this.vertices.add(target);
+        this.vertices.add(adjacent);
         this.adj[target].add(adjacent);
     }
 
+    @Override
     public void addEdge(int v, int w){
         this.E ++;
         if(Math.max(v, w) >= this.adj.length) extend(Math.max(v, w) + 1);
@@ -110,27 +124,11 @@ public class Graph {
     }
 
     @SuppressWarnings("unchecked")
-    protected List<Integer>[] initAdj(int V){
-        return (List<Integer>[]) new ArrayList[V];
-    }
-
-    public int E(){
-        return this.E;
-    }
-
-    public int V(){
-        return this.V;
-    }
-
-    public Iterable<Integer> adj(int v){
-        validateVertex(v);
-        return this.adj[v];
-    }
-
-    // 顶点 v的度数
-    public int degree(int v){
-        validateVertex(v);
-        return this.adj[v].size();
+    protected static <T> List<T>[] initListArray(int V){
+        List<T>[] adj = (List<T>[]) new ArrayList[V];
+        for(int i = 0; i < V; i ++)
+            adj[i] =  new ArrayList<>(INIT_SIZE);
+        return adj;
     }
 
     // 图的最大度数
@@ -171,6 +169,6 @@ public class Graph {
 
     public static void main(String[] args) {
         Graph g = Graph.generateGraph();
-        System.out.println(g.V);  // 6
+        System.out.println(g.V());  // 6
     }
 }

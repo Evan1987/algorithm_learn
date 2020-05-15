@@ -2,7 +2,7 @@ package Chap04_Graph.Chap04_02.cycle;
 
 import Chap04_Graph.Chap04_01.cycle.DepthFirstCycle;
 import Chap04_Graph.Chap04_02.DiGraph;
-import Chap04_Graph.Graph;
+import Chap04_Graph.Chap04_01.Graph;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

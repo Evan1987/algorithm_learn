@@ -2,13 +2,14 @@ package Chap04_Graph.Chap04_02.topological;
 
 import Chap04_Graph.Chap04_02.DiGraph;
 import Chap04_Graph.Chap04_02.cycle.DirectedCycle;
-import Chap04_Graph.Graph;
+import Chap04_Graph.Chap04_01.Graph;
 import Chap04_Graph.GraphProblem;
 
 /**
  * @author Evan
  * @date 2020/5/14 17:23
  */
+@SuppressWarnings("WeakerAccess")
 public class Topological implements GraphProblem {
     protected DiGraph G;
     private DepthFirstOrder dfs;

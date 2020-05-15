@@ -1,7 +1,6 @@
 package Chap04_Graph.Chap04_01;
 
 import Chap04_Graph.Chap04_01.paths.BreadFirstPathsImpl;
-import Chap04_Graph.Graph;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Iterables;
 import edu.princeton.cs.algs4.In;

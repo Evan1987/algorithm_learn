@@ -1,9 +1,6 @@
 package Chap04_Graph.Chap04_02;
 
-import Chap04_Graph.Graph;
-
-import java.util.ArrayList;
-import java.util.List;
+import Chap04_Graph.Chap04_01.Graph;
 
 /**
  * Directed Graph
@@ -23,8 +20,8 @@ public class DiGraph extends Graph {
 
     public DiGraph(DiGraph G){
         super(G);
-        this.inDegree = new int[G.V];
-        System.arraycopy(G.inDegree, 0, this.inDegree, 0, G.V);
+        this.inDegree = new int[G.V()];
+        System.arraycopy(G.inDegree, 0, this.inDegree, 0, G.V());
     }
 
     @Override
@@ -54,18 +51,14 @@ public class DiGraph extends Graph {
 
     @Override
     public double avgDegree() {
-        return (1.0 * this.E) / this.V;
+        return (1.0 * this.E()) / this.V();
     }
 
     public DiGraph reverse(){
-        DiGraph R = new DiGraph(this.V);
-        for(int v = 0; v < this.V; v ++){
-            if(R.adj[v] == null) R.adj[v] = new ArrayList<>();
-            for(int w: this.adj(v)){
-                if(R.adj[w] == null) R.adj[w] = new ArrayList<>();
+        DiGraph R = new DiGraph(this.V());
+        for(int v = 0; v < this.V(); v ++)
+            for(int w: this.adj(v))
                 R.addEdge(w, v);
-            }
-        }
         return R;
     }
 

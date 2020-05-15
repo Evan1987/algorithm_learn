@@ -11,8 +11,8 @@ import java.util.*;
 public class DepthFirstOrder {
     private boolean[] marked;
     private List<Integer> preOrder;               // 所有顶点的前序队列，就是dfs的调用顺序
-    private List<Integer> postOrder;              // 所有顶点的后序队列，就是顶点遍历完成的顺序
-    private Deque<Integer> reversePostOrder;      // 所有顶点的逆后序队列，就是顶点遍历完成的反序
+    private List<Integer> postOrder;              // 所有顶点的后序队列，就是顶点遍历完成的顺序，越早完成，越靠前
+    private Deque<Integer> reversePostOrder;      // 所有顶点的逆后序队列，就是顶点遍历完成的反序，越晚完成，越靠前
 
     public DepthFirstOrder(DiGraph G){
         this.preOrder = new ArrayList<>();

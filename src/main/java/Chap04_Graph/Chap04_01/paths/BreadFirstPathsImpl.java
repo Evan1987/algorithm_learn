@@ -1,7 +1,7 @@
 package Chap04_Graph.Chap04_01.paths;
 
 import Chap01_Fundamentals.Chap01_03.Queue;
-import Chap04_Graph.Graph;
+import Chap04_Graph.Chap04_01.Graph;
 
 /**
  * @author Evan

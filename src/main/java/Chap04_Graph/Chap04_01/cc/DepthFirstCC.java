@@ -1,7 +1,7 @@
 package Chap04_Graph.Chap04_01.cc;
 
 import Chap04_Graph.VertexMarkSearch;
-import Chap04_Graph.Graph;
+import Chap04_Graph.Chap04_01.Graph;
 
 /**
  * @author Evan
