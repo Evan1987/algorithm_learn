@@ -10,12 +10,12 @@ import java.util.*;
  * @author Evan
  * @date 2020/5/8 21:54
  */
-@SuppressWarnings("WeakerAccess")
 public class Graph extends AbstractGraph {
     protected final static int INIT_SIZE = 4;
 
     public Graph(){
         super();
+        this.adj = initListArray(INIT_SIZE);
     }
 
     public Graph(int V){

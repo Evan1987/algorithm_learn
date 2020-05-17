@@ -14,6 +14,7 @@ public class EdgeWeightedGraph extends Graph {
 
     public EdgeWeightedGraph(){
         super();
+        this.adjEdges = initListArray(INIT_SIZE);
     }
 
     public EdgeWeightedGraph(int V){
@@ -34,7 +35,22 @@ public class EdgeWeightedGraph extends Graph {
     }
 
     public EdgeWeightedGraph(In in){
-        this();
+        if(in == null) throw new IllegalArgumentException("Empty input");
+        try{
+            this.vertices = new HashSet<>(INIT_SIZE);
+            int V = in.readInt();
+            int E = in.readInt();
+            this.adj = initListArray(V);
+            this.adjEdges = initListArray(V);
+
+            while(!in.isEmpty()){
+                int v = in.readInt(), w = in.readInt();
+                double weight = in.readDouble();
+                this.addEdge(v, w, weight);
+            }
+        }catch (NoSuchElementException e){
+            throw new IllegalArgumentException("Invalid input format in EdgeWeightedGraph constructor", e);
+        }
     }
 
     @Override
@@ -79,6 +95,11 @@ public class EdgeWeightedGraph extends Graph {
         return list;
     }
 
+    public Iterable<Edge> adjEdges(int v){
+        this.validateVertex(v);
+        return this.adjEdges[v];
+    }
+
     public static String[] exampleEdges(){
         return new String[]{
                 "4 5 0.35", "4 7 0.37", "5 7 0.28", "0 7 0.16", "1 5 0.32", "0 4 0.38", "2 3 0.17", "1 7 0.19",
@@ -88,6 +109,18 @@ public class EdgeWeightedGraph extends Graph {
 
     public static EdgeWeightedGraph generateGraph(){
         EdgeWeightedGraph graph = new EdgeWeightedGraph();
+        for(String edge: exampleEdges()){
+            String[] line = edge.split(" ");
+            graph.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Double.parseDouble(line[2]));
+        }
         return graph;
+    }
+
+    public static void main(String[] args) {
+        EdgeWeightedGraph graph = generateGraph();
+        System.out.println(graph.V());
+        System.out.println(graph.E());
+        for(Edge e: graph.adjEdges(1))
+            System.out.println(e);
     }
 }
