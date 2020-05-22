@@ -97,14 +97,18 @@ public class Graph extends AbstractGraph {
     }
 
     protected void validateVertex(int v){
-        if(v < 0 || v >= this.V()) throw new IllegalArgumentException("vertex " + v + " should be between 0 and " + (this.V() - 1));
+        this.checkVertex(v);
     }
 
     // extend array
     protected void extend(int V){
-        List<Integer>[] temp = initListArray(V);
-        System.arraycopy(this.adj, 0, temp, 0, this.adj.length);
-        this.adj = temp;
+        this.adj = extendArr(this.adj, V);
+    }
+
+    protected static <T> List<T>[] extendArr(List<T>[] arr, int V){
+        List<T>[] temp = initListArray(V);
+        System.arraycopy(arr, 0, temp, 0, arr.length);
+        return temp;
     }
 
     // add a pair into adj matrix

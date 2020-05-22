@@ -74,9 +74,7 @@ public class EdgeWeightedGraph extends Graph {
     @Override
     protected void extend(int V) {
         super.extend(V);
-        List<Edge>[] temp = initListArray(V);
-        System.arraycopy(this.adjEdges, 0, temp, 0, this.adjEdges.length);
-        this.adjEdges = temp;
+        this.adjEdges = extendArr(this.adjEdges, V);
     }
 
     public Iterable<Edge> edges(){

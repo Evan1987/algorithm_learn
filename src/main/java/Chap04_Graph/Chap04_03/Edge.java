@@ -31,6 +31,14 @@ public class Edge implements Comparable<Edge> {
         return v;
     }
 
+    public int getV() {
+        return v;
+    }
+
+    public int getW() {
+        return w;
+    }
+
     public int other(int vertex){
         if(vertex == this.v) return this.w;
         if(vertex == this.w) return this.v;
