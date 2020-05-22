@@ -77,7 +77,7 @@ public class EdgeWeightedGraph extends Graph {
         this.adjEdges = extendArr(this.adjEdges, V);
     }
 
-    public Iterable<Edge> edges(){
+    public Iterable<? extends Edge> edges(){
         List<Edge> list = new ArrayList<>();
         for(Integer v: this.vertices){
             int selfLoops = 0;
@@ -93,7 +93,7 @@ public class EdgeWeightedGraph extends Graph {
         return list;
     }
 
-    public Iterable<Edge> adjEdges(int v){
+    public Iterable<? extends Edge> adjEdges(int v){
         this.validateVertex(v);
         return this.adjEdges[v];
     }
