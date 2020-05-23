@@ -1,6 +1,8 @@
 package Chap04_Graph.Chap04_03;
 
 import Chap02_Sorting.Chap02_04.IndexMinPQ;
+import Chap04_Graph.Edge;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class PrimMST extends AbstractMST {
             this.distTo[i] = Double.POSITIVE_INFINITY;
 
         // 如果图不是连通的，则为 最小生成森林 Ex4.3.22
-        for(int v: graph.getVertices())
+        for(int v = 0; v < graph.V(); v ++)
             if(!marked[v]) prim(graph, v);
     }
 

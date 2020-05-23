@@ -1,6 +1,7 @@
 package Chap04_Graph.Chap04_03;
 
 import Chap02_Sorting.Chap02_04.MinPQ;
+import Chap04_Graph.Edge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class LazyPrimMST extends AbstractMST {
         this.pq = new MinPQ<>();
 
         // 如果图不是连通的，则为 最小生成森林
-        for(int v: graph.getVertices())
+        for(int v = 0; v < graph.V(); v ++)
             if(!marked[v]) prim(graph, v);
     }
 

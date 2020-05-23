@@ -1,6 +1,8 @@
 package Chap04_Graph.Chap04_03;
 
 import Chap04_Graph.Chap04_01.Graph;
+import Chap04_Graph.Edge;
+import Chap04_Graph.IWithEdge;
 import edu.princeton.cs.algs4.In;
 import utils.URandom;
 import java.util.*;
@@ -9,13 +11,8 @@ import java.util.*;
  * @author Evan
  * @date 2020/5/15 14:26
  */
-public class EdgeWeightedGraph extends Graph {
+public class EdgeWeightedGraph extends Graph implements IWithEdge {
     protected List<Edge>[] adjEdges;
-
-    public EdgeWeightedGraph(){
-        super();
-        this.adjEdges = initListArray(INIT_SIZE);
-    }
 
     public EdgeWeightedGraph(int V){
         super(V);
@@ -35,14 +32,16 @@ public class EdgeWeightedGraph extends Graph {
     }
 
     public EdgeWeightedGraph(In in){
+        super(in);
+    }
+
+    @Override
+    protected void initWithInput(In in) {
         if(in == null) throw new IllegalArgumentException("Empty input");
         try{
-            this.vertices = new HashSet<>(INIT_SIZE);
-            int V = in.readInt();
-            int E = in.readInt();
+            int V = in.readInt(), E = in.readInt();
             this.adj = initListArray(V);
             this.adjEdges = initListArray(V);
-
             while(!in.isEmpty()){
                 int v = in.readInt(), w = in.readInt();
                 double weight = in.readDouble();
@@ -71,15 +70,9 @@ public class EdgeWeightedGraph extends Graph {
         this.adjEdges[w].add(e);
     }
 
-    @Override
-    protected void extend(int V) {
-        super.extend(V);
-        this.adjEdges = extendArr(this.adjEdges, V);
-    }
-
     public Iterable<? extends Edge> edges(){
         List<Edge> list = new ArrayList<>();
-        for(Integer v: this.vertices){
+        for(int v = 0; v < this.V(); v ++){
             int selfLoops = 0;
             for(Edge e: this.adjEdges[v]){
                 if(e.other(v) > v) list.add(e);
@@ -93,7 +86,8 @@ public class EdgeWeightedGraph extends Graph {
         return list;
     }
 
-    public Iterable<? extends Edge> adjEdges(int v){
+    @Override
+    public List<? extends Edge> adjEdges(int v){
         this.validateVertex(v);
         return this.adjEdges[v];
     }
@@ -106,7 +100,7 @@ public class EdgeWeightedGraph extends Graph {
     }
 
     public static EdgeWeightedGraph generateGraph(){
-        EdgeWeightedGraph graph = new EdgeWeightedGraph();
+        EdgeWeightedGraph graph = new EdgeWeightedGraph(8);
         for(String edge: exampleEdges()){
             String[] line = edge.split(" ");
             graph.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Double.parseDouble(line[2]));

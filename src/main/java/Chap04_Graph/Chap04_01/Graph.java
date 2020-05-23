@@ -2,8 +2,6 @@ package Chap04_Graph.Chap04_01;
 
 import Chap04_Graph.AbstractGraph;
 import edu.princeton.cs.algs4.In;
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.*;
 
 /**
@@ -12,11 +10,6 @@ import java.util.*;
  */
 public class Graph extends AbstractGraph {
     protected final static int INIT_SIZE = 4;
-
-    public Graph(){
-        super();
-        this.adj = initListArray(INIT_SIZE);
-    }
 
     public Graph(int V){
         super(V);
@@ -31,16 +24,9 @@ public class Graph extends AbstractGraph {
     }
 
     @Override
-    protected void nullInit() {
-        this.vertices = new HashSet<>(INIT_SIZE);
-        this.E = 0;
-        this.adj = initListArray(INIT_SIZE);
-    }
-
-    @Override
     protected void initWithV(int V) {
-        if(V < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
-        this.vertices = new HashSet<>(INIT_SIZE);
+        check(V);
+        this.V = V;
         this.E = 0;
         this.adj = initListArray(V);
     }
@@ -59,7 +45,6 @@ public class Graph extends AbstractGraph {
     protected void initWithInput(In in) {
         if(in == null) throw new IllegalArgumentException("Input stream is null");
         try{
-            this.vertices = new HashSet<>(INIT_SIZE);
             int V = in.readInt();
             check(V);
             this.adj = initListArray(V);
@@ -71,8 +56,6 @@ public class Graph extends AbstractGraph {
             for(int i = 0; i < E; i ++){
                 int v = in.readInt();
                 int w = in.readInt();
-                validateVertex(v);
-                validateVertex(w);
                 addEdge(v, w);
             }
         }catch (NoSuchElementException e){
@@ -82,7 +65,7 @@ public class Graph extends AbstractGraph {
 
     @Override
     protected void copyGraph(AbstractGraph G) {
-        this.vertices = G.getVertices();
+        this.V = G.V();
         this.E = G.E();
         this.adj = initListArray(G.V());
 
@@ -92,39 +75,17 @@ public class Graph extends AbstractGraph {
         }
     }
 
-    private void check(int V){
+    private static void check(int V){
         if(V < 0) throw new IllegalArgumentException("Number of vertices must be non-negative");
-    }
-
-    protected void validateVertex(int v){
-        this.checkVertex(v);
-    }
-
-    // extend array
-    protected void extend(int V){
-        this.adj = extendArr(this.adj, V);
-    }
-
-    protected static <T> List<T>[] extendArr(List<T>[] arr, int V){
-        List<T>[] temp = initListArray(V);
-        System.arraycopy(arr, 0, temp, 0, arr.length);
-        return temp;
-    }
-
-    // add a pair into adj matrix
-    protected void addAdj(int target, int adjacent){
-        this.vertices.add(target);
-        this.vertices.add(adjacent);
-        this.adj[target].add(adjacent);
     }
 
     @Override
     public void addEdge(int v, int w){
+        this.validateVertex(v);
+        this.validateVertex(w);
         this.E ++;
-        if(Math.max(v, w) >= this.adj.length) extend(Math.max(v, w) + 1);
-
-        this.addAdj(v, w);
-        if(v != w) this.addAdj(w, v);       // 防止自环时重复
+        this.adj[v].add(w);
+        if(v != w) this.adj[w].add(v);       // 防止自环时重复
     }
 
     @SuppressWarnings("unchecked")
@@ -159,7 +120,7 @@ public class Graph extends AbstractGraph {
     }
 
     public static Graph generateGraph(){
-        Graph g = new Graph();
+        Graph g = new Graph(6);
         g.addEdge(0, 1);
         g.addEdge(0, 2);
         g.addEdge(0, 5);

@@ -19,7 +19,7 @@ public abstract class AbstractSP {
     public abstract EdgeWeightedDigraph G();
 
     public void test(){
-        for(int v: this.G().getVertices()){
+        for(int v = 0; v < this.G().V(); v ++){
             System.out.println(this.getSourceVertex() + " to " + v + " " + this.distTo(v));
             if(this.hasPathTo(v))
                 for(DirectedEdge e: this.pathTo(v))

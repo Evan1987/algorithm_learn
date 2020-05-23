@@ -1,5 +1,7 @@
 package Chap04_Graph.Chap04_03;
 
+import Chap04_Graph.Edge;
+
 /**
  * @author Evan
  * @date 2020/5/17 20:13

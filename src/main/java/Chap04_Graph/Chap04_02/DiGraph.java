@@ -1,17 +1,14 @@
 package Chap04_Graph.Chap04_02;
 
 import Chap04_Graph.Chap04_01.Graph;
+import Chap04_Graph.IDirectedGraph;
 
 /**
  * Directed Graph
  * */
 @SuppressWarnings("WeakerAccess")
-public class DiGraph extends Graph {
-    protected int[] inDegree = new int[INIT_SIZE];
-
-    public DiGraph(){
-        super();
-    }
+public class DiGraph extends Graph implements IDirectedGraph {
+    protected int[] inDegree;
 
     public DiGraph(int V){
         super(V);
@@ -25,23 +22,12 @@ public class DiGraph extends Graph {
     }
 
     @Override
-    protected void extend(int V) {
-        super.extend(V);
-        int[] temp = new int[V];
-        System.arraycopy(this.inDegree, 0, temp, 0, this.inDegree.length);
-        this.inDegree = temp;
-    }
-
-    @Override
     public void addEdge(int v, int w) {
+        this.validateVertex(v);
+        this.validateVertex(w);
         this.E ++;
-        if(Math.max(v, w) >= this.adj.length) extend(Math.max(v, w) + 1);
-        this.addAdj(v, w);
+        this.adj[v].add(w);
         this.inDegree[w] ++;
-    }
-
-    public int outDegree(int v) {
-        return super.degree(v);
     }
 
     public int inDegree(int v){
@@ -73,7 +59,7 @@ public class DiGraph extends Graph {
      * Generate a sample Directed Graph
      */
     public static DiGraph generateGraph(){
-        DiGraph g = new DiGraph();
+        DiGraph g = new DiGraph(13);
         for(String edge: exampleEdges()){
             String[] points = edge.split("->");
             g.addEdge(Integer.parseInt(points[0]), Integer.parseInt(points[1]));

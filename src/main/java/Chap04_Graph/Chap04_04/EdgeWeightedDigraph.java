@@ -1,7 +1,8 @@
 package Chap04_Graph.Chap04_04;
 
-import Chap04_Graph.Chap04_03.Edge;
-import Chap04_Graph.Chap04_03.EdgeWeightedGraph;
+import Chap04_Graph.Chap04_02.DiGraph;
+import Chap04_Graph.Edge;
+import Chap04_Graph.IWithEdge;
 import utils.URandom;
 
 import java.util.*;
@@ -10,15 +11,9 @@ import java.util.*;
  * @author Evan
  * @date 2020/5/22 17:25
  */
-public class EdgeWeightedDigraph extends EdgeWeightedGraph {
+public class EdgeWeightedDigraph extends DiGraph implements IWithEdge {
     protected List<DirectedEdge>[] adjEdges;
     protected List<DirectedEdge>[] inEdges;
-
-    public EdgeWeightedDigraph(){
-        super();
-        this.adjEdges = initListArray(INIT_SIZE);
-        this.inEdges = initListArray(INIT_SIZE);
-    }
 
     public EdgeWeightedDigraph(int V){
         super(V);
@@ -34,29 +29,26 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
             int v = rnd.uniform(V);
             int w = rnd.uniform(V);
             double weight = rnd.nextDouble();
-            this.addEdge(new Edge(v, w, weight));
+            this.addEdge(v, w, weight);
         }
     }
 
     @Override
-    protected void extend(int V) {
-        super.extend(V);
-        this.adjEdges = extendArr(this.adjEdges, V);
-        this.inEdges = extendArr(this.inEdges, V);
+    public void addEdge(int v, int w) {
+        this.addEdge(v, w, 1.0);
+    }
+
+    public void addEdge(int v, int w, double weight){
+        this.addEdge(new DirectedEdge(v, w, weight));
     }
 
     public void addEdge(DirectedEdge e){
         int v = e.from(), w = e.to();
-        if(Math.max(v, w) >= this.adj.length) extend(Math.max(v, w) + 1);
-        this.addAdj(v, w);
+        this.validateVertex(v);
+        this.validateVertex(w);
         this.adjEdges[v].add(e);
         this.inEdges[w].add(e);
         this.E ++;
-    }
-
-    @Override
-    public void addEdge(Edge e){
-        this.addEdge(new DirectedEdge(e.getV(), e.getW(), e.getWeight()));
     }
 
     public int outDegree(int v){
@@ -70,7 +62,7 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
     }
 
     @Override
-    public Iterable<DirectedEdge> adjEdges(int v){
+    public List<DirectedEdge> adjEdges(int v){
         this.validateVertex(v);
         return this.adjEdges[v];
     }
@@ -78,8 +70,8 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
     @Override
     public Iterable<DirectedEdge> edges() {
         List<DirectedEdge> edges = new ArrayList<>();
-        for(int v: this.vertices)
-            edges.addAll(this.adjEdges[v]);
+        for(List<DirectedEdge> es: this.adjEdges)
+            edges.addAll(es);
         return edges;
     }
 
@@ -92,7 +84,7 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
     }
 
     public static EdgeWeightedDigraph generateGraph(){
-        EdgeWeightedDigraph graph = new EdgeWeightedDigraph();
+        EdgeWeightedDigraph graph = new EdgeWeightedDigraph(8);
         for(String edge: exampleEdges()){
             String[] line = edge.split(" ");
             graph.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Double.parseDouble(line[2]));
@@ -104,7 +96,7 @@ public class EdgeWeightedDigraph extends EdgeWeightedGraph {
         EdgeWeightedDigraph graph = generateGraph();
         System.out.println(graph.V());
         System.out.println(graph.E());
-        for(int v: graph.vertices){
+        for(int v = 0; v < graph.V(); v ++){
             System.out.print("Vertex: " + v + ": ");
             for(Edge e: graph.adjEdges(v))
                 System.out.print(e + " | ");

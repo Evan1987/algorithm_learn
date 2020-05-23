@@ -1,6 +1,6 @@
 package Chap04_Graph.Chap04_04;
 
-import Chap04_Graph.Chap04_03.Edge;
+import Chap04_Graph.Edge;
 
 /**
  * @author Evan

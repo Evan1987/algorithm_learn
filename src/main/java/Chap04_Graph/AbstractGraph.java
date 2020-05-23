@@ -1,23 +1,17 @@
 package Chap04_Graph;
 
 import edu.princeton.cs.algs4.In;
-
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Evan
  * @date 2020/5/15 16:47
  */
-public abstract class AbstractGraph implements GraphLike{
+public abstract class AbstractGraph implements IGraph {
 
     protected List<Integer>[] adj;
-    protected Set<Integer> vertices;
     protected int E;
-
-    public AbstractGraph(){
-        this.nullInit();
-    }
+    protected int V;
 
     public AbstractGraph(int V){
         this.initWithV(V);
@@ -31,7 +25,6 @@ public abstract class AbstractGraph implements GraphLike{
         this.copyGraph(G);
     }
 
-    protected abstract void nullInit();
     protected abstract void initWithV(int V);
     protected abstract void initWithInput(In in);
     protected abstract void copyGraph(AbstractGraph G);
@@ -43,7 +36,7 @@ public abstract class AbstractGraph implements GraphLike{
 
     @Override
     public int V() {
-        return this.vertices.size();
+        return this.V;
     }
 
     @Override
@@ -53,15 +46,11 @@ public abstract class AbstractGraph implements GraphLike{
 
     @Override
     public Iterable<Integer> adj(int v) {
-        checkVertex(v);
+        validateVertex(v);
         return this.adj[v];
     }
 
-    public Set<Integer> getVertices() {
-        return this.vertices;
-    }
-
-    protected void checkVertex(int v){
-        if(!this.vertices.contains(v)) throw new IllegalArgumentException("Vertex " + v + " not in vertices.");
+    protected void validateVertex(int v){
+        if(v < 0 || v >= this.V()) throw new IllegalArgumentException("Vertex " + v + " not in vertices.");
     }
 }

@@ -1,4 +1,4 @@
-package Chap04_Graph.Chap04_03;
+package Chap04_Graph;
 
 import org.jetbrains.annotations.NotNull;
 

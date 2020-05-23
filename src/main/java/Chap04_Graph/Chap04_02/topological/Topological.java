@@ -3,6 +3,7 @@ package Chap04_Graph.Chap04_02.topological;
 import Chap04_Graph.Chap04_02.DiGraph;
 import Chap04_Graph.Chap04_02.cycle.DirectedCycle;
 import Chap04_Graph.Chap04_01.Graph;
+import Chap04_Graph.Chap04_04.EdgeWeightedDigraph;
 import Chap04_Graph.GraphProblem;
 
 /**
@@ -11,7 +12,7 @@ import Chap04_Graph.GraphProblem;
  */
 @SuppressWarnings("WeakerAccess")
 public class Topological implements GraphProblem {
-    protected DiGraph G;
+    protected Graph G;
     private DepthFirstOrder dfs;
 
     public Topological(DiGraph G){
@@ -25,7 +26,11 @@ public class Topological implements GraphProblem {
         return "Find the topological order for DAG.";
     }
 
+    @Deprecated
     public boolean isDAG(){
+        return this.hasOrder();
+    }
+    public boolean hasOrder(){
         return this.dfs != null;
     }
 
@@ -67,7 +72,7 @@ public class Topological implements GraphProblem {
     }
 
     public static void main(String[] args) {
-        DiGraph g = new DiGraph();
+        DiGraph g = new DiGraph(13);
         g.addEdge(0, 1); g.addEdge(0, 5); g.addEdge(0, 6); g.addEdge(2, 0);
         g.addEdge(2, 3); g.addEdge(3, 5); g.addEdge(5, 4); g.addEdge(6, 4);
         g.addEdge(6, 9); g.addEdge(7, 6); g.addEdge(8, 7); g.addEdge(9, 10);

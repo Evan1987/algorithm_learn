@@ -11,7 +11,6 @@ import java.util.List;
  * @date 2020/5/11 16:02
  * 连通分量的查询
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class ConnectedComponent implements GraphProblem {
     private Graph graph;
 

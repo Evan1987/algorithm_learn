@@ -3,6 +3,8 @@ package Chap04_Graph.Chap04_03;
 import Chap01_Fundamentals.Chap01_05.QuickUnionUF;
 import Chap01_Fundamentals.Chap01_05.UnionFind;
 import Chap02_Sorting.Chap02_04.MinPQ;
+import Chap04_Graph.Edge;
+
 import java.util.ArrayList;
 import java.util.List;
 

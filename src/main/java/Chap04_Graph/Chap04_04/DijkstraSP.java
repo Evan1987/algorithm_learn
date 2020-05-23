@@ -2,7 +2,7 @@ package Chap04_Graph.Chap04_04;
 
 import Chap01_Fundamentals.Chap01_03.Stack;
 import Chap02_Sorting.Chap02_04.IndexMinPQ;
-import Chap04_Graph.Chap04_03.Edge;
+import Chap04_Graph.Edge;
 
 /**
  * @author Evan
@@ -22,6 +22,11 @@ public class DijkstraSP extends AbstractSP {
 
     @Override
     protected void init(EdgeWeightedDigraph G, int s) {
+        this.prepare(G, s);
+        this.action();
+    }
+
+    protected void prepare(EdgeWeightedDigraph G, int s){
         this.G = G;
         this.s = s;
         int N = G.V();
@@ -29,18 +34,22 @@ public class DijkstraSP extends AbstractSP {
         for(int v = 0; v < N; v ++)
             this.distTo[v] = Double.POSITIVE_INFINITY;
         this.distTo[s] = 0.0;
-
         this.edgeTo = new DirectedEdge[N];
-        this.pq = new IndexMinPQ<>(N);
-        pq.insert(s, 0.0);
-        while(!pq.isEmpty()){
+    }
+
+    protected void action(){
+        this.pq = new IndexMinPQ<>(this.G.V());
+        this.pq.insert(s, 0.0);
+        while(!this.pq.isEmpty()){
             int v = pq.delMin();
             for(Edge e: G.adjEdges(v))
                 this.relax((DirectedEdge) e);
         }
     }
 
-    private void relax(DirectedEdge edge){
+
+
+    protected void relax(DirectedEdge edge){
         int v = edge.from(), w = edge.to();
         double newDist = this.distTo[v] + edge.getWeight();
         if(this.distTo[w] > newDist){
