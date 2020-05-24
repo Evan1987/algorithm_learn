@@ -12,8 +12,11 @@ import java.util.Stack;
  */
 @SuppressWarnings("WeakerAccess")
 public abstract class Cycle implements GraphProblem {
-    protected Graph graph;
+    public Cycle(Graph g){
+        this.initWithGraph(g);
+    }
 
+    protected abstract void initWithGraph(Graph g);
     public abstract boolean hasCycle();
     public abstract Iterable<Integer> getCycle();   // return a cycle in the graph
 
@@ -52,11 +55,6 @@ public abstract class Cycle implements GraphProblem {
                 marked[w] = false;
         }
         return null;
-    }
-
-    @Override
-    public Graph G() {
-        return this.graph;
     }
 
     @Override

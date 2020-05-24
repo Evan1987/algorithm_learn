@@ -44,11 +44,9 @@ public class EdgeWeightedDigraph extends DiGraph implements IWithEdge {
 
     public void addEdge(DirectedEdge e){
         int v = e.from(), w = e.to();
-        this.validateVertex(v);
-        this.validateVertex(w);
+        super.addEdge(v, w);
         this.adjEdges[v].add(e);
         this.inEdges[w].add(e);
-        this.E ++;
     }
 
     public int outDegree(int v){

@@ -22,11 +22,6 @@ public class DijkstraSP extends AbstractSP {
 
     @Override
     protected void init(EdgeWeightedDigraph G, int s) {
-        this.prepare(G, s);
-        this.action();
-    }
-
-    protected void prepare(EdgeWeightedDigraph G, int s){
         this.G = G;
         this.s = s;
         int N = G.V();
@@ -35,9 +30,6 @@ public class DijkstraSP extends AbstractSP {
             this.distTo[v] = Double.POSITIVE_INFINITY;
         this.distTo[s] = 0.0;
         this.edgeTo = new DirectedEdge[N];
-    }
-
-    protected void action(){
         this.pq = new IndexMinPQ<>(this.G.V());
         this.pq.insert(s, 0.0);
         while(!this.pq.isEmpty()){
@@ -45,9 +37,8 @@ public class DijkstraSP extends AbstractSP {
             for(Edge e: G.adjEdges(v))
                 this.relax((DirectedEdge) e);
         }
+
     }
-
-
 
     protected void relax(DirectedEdge edge){
         int v = edge.from(), w = edge.to();

@@ -13,18 +13,16 @@ import java.util.Deque;
  * @date 2020/5/14 15:54
  */
 public class DirectedCycle extends DepthFirstCycle {
-    private static boolean[] onStack;
-    private static boolean initOnStack(int V){
-        onStack = new boolean[V];
-        return true;
-    }
+    private boolean[] onStack;
 
-    private DirectedCycle(boolean flag, DiGraph G){
+    public DirectedCycle(DiGraph G){
         super(G);
     }
 
-    public DirectedCycle(DiGraph G){
-        this(initOnStack(G.V()), G);
+    @Override
+    protected void initWithGraph(Graph graph) {
+        this.onStack = new boolean[graph.V()];
+        super.initWithGraph(graph);
     }
 
     // 有向图的平行边检查并不简单，所以此处覆盖

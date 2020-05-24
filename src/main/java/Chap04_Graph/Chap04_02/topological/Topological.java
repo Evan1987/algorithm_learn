@@ -50,7 +50,7 @@ public class Topological implements GraphProblem {
     }
 
     public Iterable<Integer> order(){
-        return this.preOrder();
+        return this.reversePostOrder();
     }
 
     @Override

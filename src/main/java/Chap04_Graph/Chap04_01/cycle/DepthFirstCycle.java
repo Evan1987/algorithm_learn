@@ -12,11 +12,17 @@ import java.util.Deque;
  * 使用深度优先判定图是否含有环
  */
 public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
+    protected Graph graph;
     protected boolean[] marked;
     protected int[] edgeTo;
     protected Iterable<Integer> cycle;
 
     public DepthFirstCycle(Graph graph){
+        super(graph);
+    }
+
+    @Override
+    protected void initWithGraph(Graph graph) {
         this.graph = graph;
         this.cycle = this.getSelfLoop(graph);
         if(cycle != null) {
@@ -73,6 +79,11 @@ public class DepthFirstCycle extends Cycle implements VertexMarkSearch {
     @Override
     public Iterable<Integer> getCycle() {
         return this.cycle;
+    }
+
+    @Override
+    public Graph G() {
+        return this.graph;
     }
 
     public static void main(String[] args) {
