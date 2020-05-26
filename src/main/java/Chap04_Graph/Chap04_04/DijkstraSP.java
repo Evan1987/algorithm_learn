@@ -37,7 +37,6 @@ public class DijkstraSP extends AbstractSP {
             for(Edge e: G.adjEdges(v))
                 this.relax((DirectedEdge) e);
         }
-
     }
 
     protected void relax(DirectedEdge edge){
