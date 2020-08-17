@@ -6,9 +6,11 @@ package Chap05_String.Chap05_01;
  *
  */
 public class LSD {
+
+    private static final int R = 256;  // extend ASCII alphabet size
+
     public static void sort(String[] a, int w){
         int N = a.length;
-        int R = 1 << 8;  // // extend ASCII alphabet size
         String[] aux = new String[N];
         for(int d = w - 1; d >= 0; d --){
             int[] count = new int[R + 1];
