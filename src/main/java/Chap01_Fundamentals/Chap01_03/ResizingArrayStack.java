@@ -15,9 +15,7 @@ public class ResizingArrayStack<Item> {
 
     private void resize(int max){
         Item[] temp = (Item[]) new Object[max];
-        for(int i = 0; i < this.N; i++){
-            temp[i] = this.a[i];
-        }
+        if (this.N >= 0) System.arraycopy(this.a, 0, temp, 0, this.N);
         this.a = temp;
     }
 
