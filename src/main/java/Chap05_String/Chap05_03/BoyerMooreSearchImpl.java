@@ -82,6 +82,7 @@ public class BoyerMooreSearchImpl implements ISearch {
 
     /**
      * 利用已经计算的 suffix length信息加速计算
+     * 对于每个指针 i，suffix[i]表示 pattern[:(i + 1)] 与 pattern的公共后缀长度
      * */
     private static int[] buildHelperSuffixLength(String pattern) {
         int M = pattern.length();
