@@ -90,10 +90,12 @@ public class BoyerMooreSearchImpl implements ISearch {
         suffix[M - 1] = M;
         int f = 0, g = M - 1;
         for(int i = M - 2; i >= 0; i --) {
+            // 利用之前的匹配信息
             if(i > g && suffix[M - 1 - (f - i)] < i - g)
                 suffix[i] = suffix[M - 1 - (f - i)];
             else{
                 if(i < g) g = i;
+                // 采用暴力方式
                 f = i;
                 while(g >= 0 && pattern.charAt(g) == pattern.charAt(M - 1 - (i - g)))
                     g --;
@@ -137,7 +139,7 @@ public class BoyerMooreSearchImpl implements ISearch {
             // 坏字符 && 好后缀
             s += Math.max(j - this.badCharIndexes[text.charAt(s + j)], m - 1 - this.goodSuffixIndexes[j]);
         }
-        return -1;
+        return n;
     }
 
     public static void main(String[] args) {
