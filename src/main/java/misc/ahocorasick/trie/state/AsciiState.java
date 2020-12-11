@@ -12,7 +12,7 @@ public class AsciiState extends State {
     static final int SIZE = 256;
 
     // goto 表，也称转移函数。根据字符串的下一个字符转移到下一个状态
-    private State[] success = new State[SIZE];
+    private final State[] success = new State[SIZE];
 
     public AsciiState() {}
     public AsciiState(int depth) {
