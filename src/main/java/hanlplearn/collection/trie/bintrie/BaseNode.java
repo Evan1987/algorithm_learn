@@ -1,15 +1,22 @@
 package hanlplearn.collection.trie.bintrie;
 
 
+import misc.ahocorasick.trie.Trie;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+
+
+@SuppressWarnings("rawtypes")
 public abstract class BaseNode<V> implements Comparable<BaseNode<V>> {
 
     // 状态数组
     static final Status[] ARRAY_STATUS =Status.values();
 
     // 子节点
-    protected BaseNode<V>[] children;
+    protected BaseNode[] children;
 
     // 节点状态
     protected Status status;
@@ -85,6 +92,21 @@ public abstract class BaseNode<V> implements Comparable<BaseNode<V>> {
         return cur;
     }
 
+    // 获取节点的成词状态
+    @SuppressWarnings("unchecked")
+    protected void walk(StringBuilder sb, Collection<Map.Entry<String, V>> entries) {
+        sb.append(this.c);
+        if (this.status == Status.WORD_MIDDLE || this.status == Status.WORD_END) {
+            entries.add(new TrieEntry(sb.toString(), this.value));
+        }
+
+        if (this.children == null) return;
+        for (BaseNode<V> node: this.children) {
+            if (node == null) continue;
+            node.walk(new StringBuilder(sb), entries);
+        }
+    }
+
     public enum Status
     {
         // 未指定，用于删除词条
@@ -107,6 +129,18 @@ public abstract class BaseNode<V> implements Comparable<BaseNode<V>> {
 
         Status(int code) {
             this.code = code;
+        }
+    }
+
+    public class TrieEntry extends AbstractMap.SimpleEntry<String, V> implements Comparable<TrieEntry> {
+
+        public TrieEntry(String key, V value) {
+            super(key, value);
+        }
+
+        @Override
+        public int compareTo(@NotNull TrieEntry o) {
+            return this.getKey().compareTo(o.getKey());
         }
     }
 

@@ -3,6 +3,7 @@ package hanlplearn.collection.trie.bintrie.util;
 
 import hanlplearn.collection.trie.bintrie.BaseNode;
 
+
 @SuppressWarnings("rawtypes")
 public class ArrayTool
 {
