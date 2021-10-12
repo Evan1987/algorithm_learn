@@ -1,6 +1,7 @@
 package hanlplearn.collection.trie.bintrie;
 
 
+import hanlplearn.collection.IHit;
 import hanlplearn.collection.trie.ITrie;
 import java.util.*;
 
@@ -167,5 +168,25 @@ public class BinTrie<V> extends BaseNode<V> implements ITrie<V> {
     @Override
     protected BaseNode<V> getChild(char c) {
         return this.children[c];
+    }
+
+    // 全切分
+    public void parseText(String text, IHit<V> processor) {
+        int length = text.length();
+        int begin = 0;
+        BaseNode<V> state = this;
+        for (int i = begin; i < length; i ++) {
+            state = state.transition(text.charAt(i));
+            if (state != null) {
+                V value = state.getValue();
+                if (value != null) {
+                    processor.hit(begin, i + 1, value);
+                }
+            } else {
+                i = begin;  // 退回本次初始
+                begin ++;
+                state = this;
+            }
+        }
     }
 }
