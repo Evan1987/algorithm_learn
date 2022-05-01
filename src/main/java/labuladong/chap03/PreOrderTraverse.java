@@ -15,9 +15,6 @@ import java.util.List;
  */
 public class PreOrderTraverse implements ITraverse {
 
-    private static final String SEP = ",";
-    private static final String EMPTY = "#";
-
     private void traverse(TreeNode<Integer> node, List<String> values) {
         if (node == null) {
             values.add(EMPTY);
