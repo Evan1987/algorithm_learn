@@ -2,7 +2,6 @@ package leetcode;
 
 import leetcode.utils.ListNode;
 
-import java.util.*;
 
 /**
  * @author : zhaochengming

@@ -1,7 +1,5 @@
 package leetcode;
 
-import java.util.*;
-
 /**
  * @author : zhaochengming
  * @date : 2022/5/16 0:28
