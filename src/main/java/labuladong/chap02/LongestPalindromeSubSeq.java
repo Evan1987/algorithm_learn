@@ -1,6 +1,5 @@
 package labuladong.chap02;
 
-import java.util.Arrays;
 
 /**
  * @author : zhaochengming
@@ -17,9 +16,6 @@ public class LongestPalindromeSubSeq {
 
         // base case 对角线为 1, i > j部分为 0
         for (int i = 0; i < n; i ++) {
-            for (int j = 0; j < i; j ++) {
-                dp[i][j] = 0;
-            }
             dp[i][i] = 1;
         }
 
