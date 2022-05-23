@@ -21,5 +21,24 @@ public class ListNode {
         this(0);
     }
 
+    public static ListNode build(int[] arr) {
+        ListNode head = new ListNode();
+        ListNode curr = head;
+        for (int x: arr) {
+            curr.next = new ListNode(x);
+            curr = curr.next;
+        }
+
+        return head.next;
+    }
+
+    public void print() {
+        ListNode curr = this;
+        while (curr != null) {
+            System.out.println(curr.val);
+            curr = curr.next;
+        }
+    }
+
 }
 
