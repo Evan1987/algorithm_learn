@@ -339,6 +339,3 @@ class SoftPlus(ActivationBase):
         exp_x = np.exp(x)
         return exp_x / ((exp_x + 1) ** 2)
 
-
-__all__ = ["Sigmoid", "ReLU", "LeakyReLU", "GELU", "Tanh", "Affine", "Identity",
-           "ELU", "Exponential", "SELU", "HardSigmoid", "SoftPlus"]
