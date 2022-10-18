@@ -8,11 +8,12 @@ import tensorflow_probability as tfp
 from tensorflow_probability.python.layers import VariableLayer
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
-from tensorflow_probability.python.distributions import distribution as tfd
+import tensorflow_probability.python.distributions as tfd
 from tensorflow_probability.python.layers import DistributionLambda
 from tensorflow_probability.python.distributions import Normal
 from tensorflow.keras.constraints import Constraint
 
 
+tfd.Mixture
 
 
