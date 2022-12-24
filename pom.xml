@@ -13,8 +13,11 @@
 
     <repositories>
         <repository>
-            <id>maven-ali</id>
+            <id>central</id>
+            <name>aliyun maven</name>
             <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <!-- 是否开启发布版构件下载 -->
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -24,14 +27,18 @@
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>15.0</version>
-            <scope>compile</scope>
+            <version>23.1.0</version>
         </dependency>
 
 <!--        <dependency>-->
@@ -43,13 +50,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.0-jre</version>
+            <version>31.1-jre</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.7</version>
+            <version>3.12.0</version>
         </dependency>
 
         <dependency>
@@ -67,7 +74,7 @@
         <dependency>
             <groupId>com.hankcs</groupId>
             <artifactId>hanlp</artifactId>
-            <version>portable-1.8.2</version>
+            <version>portable-1.8.3</version>
         </dependency>
     </dependencies>
 
