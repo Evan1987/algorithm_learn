@@ -10,26 +10,25 @@ import leetcode.utils.TreeNode;
  */
 public class L0671_SecondMinNode {
     static class Solution {
+        int ans = -1;
+        int rootValue;
+
         public int findSecondMinimumValue(TreeNode root) {
 
-            int min = root.val;
-            int ans = dfs(root, min);
-
-            return ans == min ? -1 : ans;
+            rootValue = root.val;
+            dfs(root);
+            return ans;
         }
 
-        private int dfs(TreeNode node, int min) {
-            if (node == null) return min;
-            if (node.val > min) return node.val;
-            int leftMin = dfs(node.left, min);
-            int rightMin = dfs(node.right, min);
-            if (leftMin == min) {
-                return rightMin;
+        private void dfs(TreeNode node) {
+            if (node == null) return;
+            if (ans != -1 && node.val > ans) return;
+            if (node.val > rootValue) {
+                ans = node.val;
+                return;
             }
-            if (rightMin == min) {
-                return leftMin;
-            }
-            return Math.min(leftMin, rightMin);
+            dfs(node.left);
+            dfs(node.right);
         }
     }
 }
