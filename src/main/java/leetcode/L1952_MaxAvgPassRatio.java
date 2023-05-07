@@ -30,20 +30,25 @@ public class L1952_MaxAvgPassRatio {
             }
 
             double delta() {
-                return (this.total - this.pass) * 1.0 / (this.total * this.total);
+                return (this.total - this.pass) * 1.0 / (this.total * (this.total + 1));
             }
         }
 
         public double maxAverageRatio(int[][] classes, int extraStudents) {
             int n = classes.length;
+            if (n == 1) {
+                int pass = classes[0][0], total = classes[0][1];
+                return (pass + extraStudents) * 1.0 / (total + extraStudents);
+            }
+
             PriorityQueue<Info> pq = new PriorityQueue<>(n, (o1, o2) -> -Double.compare(o1.delta(), o2.delta()));
             for (int[] c: classes) {
                 pq.offer(new Info(c[0], c[1]));
             }
-
             while (extraStudents > 0 && !pq.isEmpty()) {
                 Info info = pq.poll();
-                while (extraStudents > 0 && !pq.isEmpty() && info.delta() >= pq.peek().delta()) {
+                Info top = pq.peek();
+                while (extraStudents > 0 && info.delta() >= top.delta()) {
                     info.add(1);
                     extraStudents --;
                 }
