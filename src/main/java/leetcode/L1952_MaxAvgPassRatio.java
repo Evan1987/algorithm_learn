@@ -30,7 +30,7 @@ public class L1952_MaxAvgPassRatio {
             }
 
             double delta() {
-                return (this.total - this.pass) * 1.0 / (this.total * (this.total + 1));
+                return (this.total - this.pass) * 1.0 / this.total / (this.total + 1);
             }
         }
 
