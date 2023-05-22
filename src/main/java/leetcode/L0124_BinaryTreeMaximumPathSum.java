@@ -6,6 +6,7 @@ import leetcode.utils.TreeNode;
  * @author : zhaochengming
  * @date : 2022/5/8 20:10
  * @description : https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/
+ * 最大路径和
  */
 public class L0124_BinaryTreeMaximumPathSum {
 
