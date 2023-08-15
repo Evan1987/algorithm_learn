@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # @date    : 2023/7/26 16:43
 # @author  : zhaochengming
+# https://github.com/busesese/MultiTaskModel/blob/main/mmoe.py
 
 import torch
 import torch.nn as nn
@@ -38,7 +39,7 @@ class MMoE(nn.Module):
         self.use_expert_bias = use_expert_bias
         self.use_gate_bias = use_gate_bias
 
-        # 共享embedding特征层
+        # 共享embedding特征层，按特征逐个设置embedding层
         embed_feature_count = 0
         side_feature_count = 0
         for feature, (feature_num, _) in self.user_feature_dict.items():
@@ -55,31 +56,50 @@ class MMoE(nn.Module):
             else:
                 side_feature_count += 1
 
+        # 特征总数
         feature_size = embedding_length * embed_feature_count + side_feature_count
 
-        # experts专家层 与experts数量有关 [F, H, N_E]
-        self.expert_kernels = nn.Parameter(torch.empty(feature_size, units, n_experts), requires_grad=True)
-        nn.init.normal_(self.expert_kernels, 0.0, 1.0)
-
-        self.expert_bias = None
-        if self.use_expert_bias:
-            # [H, N_E]
-            self.expert_bias = nn.Parameter(torch.empty(units, n_experts), requires_grad=True)
-            nn.init.normal_(self.experts_bias, 0.0, 1.0)
+        # experts专家层 [F, H, N_E]
+        self.expert_kernels = self.create_parameter(feature_size, units, n_experts)
+        # [H, N_E]
+        self.expert_bias = self.create_parameter(units, n_experts) if self.use_expert_bias else None
 
         # gates门限层 与 task数量有关 [H, N_E] * N_T
-        self.gate_kernels = []
-        for _ in range(n_tasks):
-            gate_kernel = nn.Parameter(torch.empty(units, n_experts), requires_grad=True)
-            nn.init.normal_(gate_kernel, 0.0, 1.0)
-            self.gate_kernels.append(gate_kernel)
+        self.gate_kernels = [self.create_parameter(units, n_experts) for _ in range(n_tasks)]
 
-        self.gate_bias = []
-        if self.use_gate_bias:
-            self.gate_bias = [nn.Parameter(torch.randn(n_experts), requires_grad=True) for _ in range(n_tasks)]
+        # [N_E,] * N_T
+        self.gate_bias = [nn.Parameter(torch.randn(n_experts), requires_grad=True) for _ in range(n_tasks)] \
+            if self.use_gate_bias else []
 
         # esmm 中的 CTR CTCVR独立tower
+        hid_dims = [units, *tower_hidden_sizes]
         for i in range(self.n_tasks):
-            self.add_module(f"", nn.ModuleList())
+            name = f"tower_{i + 1}"
+            self.add_module(name, self.set_tower(name, units, tower_hidden_sizes, output_size, dropout))
+
+    @staticmethod
+    def set_tower(name: str, input_dim: int, hidden_dims: Tuple, output_size: int, dropout: float) -> nn.ModuleList:
+        """
+        build the task-tower
+        input_dim ->
+         linear -> hidden_dims[0] -> BN -> Dropout ->
+         linear -> hidden_dims[1] ....  -> Dropout ->
+         linear -> hidden_dims[-1] -> BN -> Dropout ->
+         linear -> output
+        """
+        tower = nn.ModuleList()
+        dims = [input_dim, *hidden_dims]
+        for i in range(len(dims) - 1):
+            tower.add_module(f"{name}_dnn_{i}", nn.Linear(dims[i], dims[i + 1]))
+            tower.add_module(f"{name}_bn_{i}", nn.BatchNorm1d(dims[i + 1]))
+            tower.add_module(f"{name}_dropout_{i}", nn.Dropout(dropout))
+        tower.add_module(f"{name}_last", nn.Linear(dims[-1], output_size))
+        return tower
+
+    @staticmethod
+    def create_parameter(*shape):
+        p = nn.Parameter(torch.empty(shape), requires_grad=True)
+        nn.init.normal_(p, 0.0, 1.0)
+        return p
 
 
