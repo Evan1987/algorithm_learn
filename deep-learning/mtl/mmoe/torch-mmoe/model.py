@@ -178,3 +178,6 @@ if __name__ == '__main__':
 
     towers = TaskTower(["ctr", "ctcvr"], mmoe.units)
     final_outs = towers(mmoe_outs)
+
+    model = nn.Sequential(mmoe, towers)
+    print(model(a)[0].shape)
