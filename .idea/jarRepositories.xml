@@ -2,6 +2,11 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="Alipay-Releases-dev" />
+      <option name="name" value="Alipay-Releases-dev" />
+      <option name="url" value="http://artifacts.alipay.com/artifact/repositories/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="meituan-dianping-releases" />
       <option name="name" value="Repository for releases artifacts" />
       <option name="url" value="http://pixel.sankuai.com/repository/mtdp" />
@@ -22,9 +27,29 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="aliyun maven" />
+      <option name="url" value="http://artifacts.alipay.com/artifact/repositories/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven_central" />
+      <option name="name" value="Maven Central" />
+      <option name="url" value="http://artifacts.alipay.com/artifact/repositories/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Alipay-Snapshot-dev" />
+      <option name="name" value="Alipay-Snapshot-dev" />
+      <option name="url" value="http://artifacts.alipay.com/artifact/repositories/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="alipay_test" />
+      <option name="name" value="alipay_test" />
+      <option name="url" value="http://artifacts.alipay.com/artifact/repositories/maven-public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="maven_central" />

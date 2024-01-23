@@ -4,14 +4,15 @@ import re
 from typing import *
 
 
-def visualize_tokens(token_bytes: List[bytes]) -> None:
+def visualize_tokens(tokens: List[Union[str, bytes]]) -> None:
     background = [f"\u001b[48;5;{i}m" for i in [167, 179, 185, 77, 80, 68, 134]]
 
     n = len(background)
     i = 0
     last_color = None
-    for x in token_bytes:
-        x = x.decode("utf-8", "replace")
+    for x in tokens:
+        if isinstance(x, bytes):
+            x = x.decode("utf-8", "replace")
         color = background[i % n]
         if color == last_color:
             color = background[(i + 1) % n]
@@ -50,7 +51,51 @@ class SimpleBPE(object):
 
         # Now, use our data to figure out which merges we should make
         while len(self.ranks) < vocab_size:
-            pass
+            # Find the most common pair bytes
+            stats: Dict[Tuple[bytes, bytes], int] = {}
+            for piece in words:
+                for i in range(len(piece) - 1):
+                    stats[(piece[i], piece[i + 1])] = stats.get((piece[i], piece[i + 1]), 0) + 1
+
+            (bytes_x, bytes_y) = max(stats, key=lambda x: stats[x])
+            # Add the new token!
+            self.ranks[bytes_x + bytes_y] = len(self.ranks)
+
+            # Now merge that most common pair in all the words.
+            # That is, update our training data to reflect our decision to make that pair into a new token.
+            new_words = []
+            for piece in words:
+                new_piece = []
+                sz = len(piece)
+                i = 0
+                while i < sz - 1:
+                    if (piece[i], piece[i + 1]) == (bytes_x, bytes_y):
+                        new_piece.append(bytes_x + bytes_y)
+                        i += 2
+                    else:
+                        new_piece.append(piece[i])
+                        i += 1
+                new_words.append(new_piece)
+            words = new_words
+
+    def encode(self, inputs: bytes) -> List[int]:
+        parts = [bytes([b]) for b in inputs]
+        while len(parts) > 1:
+            # find the smallest(e.g. the most frequent) rank for next two parts to be combined
+            idx = None
+            min_rank = float("inf")
+            for i in range(len(parts) - 1):
+                rank = self.ranks.get(parts[i] + parts[i + 1], float("inf"))
+                if rank < min_rank:
+                    idx = i
+                    min_rank = rank
+            if min_rank == float("inf"):
+                break
+            parts = parts[:idx] + [parts[idx] + parts[idx + 1]] + parts[idx + 2:]
+        return [self.ranks[part] for part in parts]
+
+
+
 
 
 
