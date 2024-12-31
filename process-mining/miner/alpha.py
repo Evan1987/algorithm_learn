@@ -1,27 +1,31 @@
-
 import graphviz
 from typing import *
 
-
 START = 'I'
 END = 'O'
+PARALLEL = "||"
+CASUALTY = "→"
+CHOICE = "#"
+SKIP = "△"
+LOOP = "♢"
+
+
+def normalize_trace(trace: List[str]) -> List[str]:
+    if trace[0] != START:
+        trace = [START] + trace
+    if trace[-1] != END:
+        trace = trace + [END]
+    return trace
 
 
 class AlphaMiner(object):
 
-    def __init__(self, name: str = None):
-        self.dfg = graphviz.Digraph(name)
-        self.petri_net = graphviz.Digraph(name)
-        # {'a': 10, 'b': 15, ...}
-        self.nodes_agg: Dict[str, int] = {}
-        # {('a', 'b'): 10, ('b', 'c'): 5...}
-        self.arcs_agg: Dict[Tuple[str, str], int] = {}
+    def __init__(self):
         # {('a', 'b'): '->', ('b', 'c'): '||',...}
         self.footprint: Dict[Tuple[str, str], str] = {}
         # all connected
         self.node_predecessors: Dict[str, Set[str]] = {}
         self.node_successors: Dict[str, Set[str]] = {}
-        self.node_self_connected: Set[str] = set()
         # maximal candidates
         self.maximal_candidates: List[Tuple[Set[str], Set[str]]] = []
         # transitions
@@ -32,25 +36,13 @@ class AlphaMiner(object):
         self.flow_relations: Dict[str, Set[str]] = {}
 
     def clear(self):
-        self.nodes_agg.clear()
-        self.arcs_agg.clear()
         self.footprint.clear()
-
-    def generate_dfg(self, orientation: str = 'LR') -> graphviz.Digraph:
-        """Creating the DFG by Graphviz """
-        v = graphviz.Digraph()
-        v.attr(rankdir=orientation, size='1000,1000')
-        v.format = "png"
-        # DFG nodes
-        for node in self.nodes_agg:
-            # start or end - double circles
-            shape = "doublecircle" if node == START or node == END else "circle"
-            v.attr("node", shape=shape)
-            v.node(node, label=node)
-        # DFG edges
-        for (start_node, end_node), freq in self.arcs_agg.items():
-            v.edge(start_node, end_node, label=str(freq))
-        return v
+        self.node_predecessors.clear()
+        self.node_successors.clear()
+        self.maximal_candidates.clear()
+        self.transitions.clear()
+        self.places.clear()
+        self.flow_relations.clear()
 
     def generate_petri_net(self, orientation: str = 'LR') -> graphviz.Digraph:
         """Creating the Petri Net by Graphviz"""
@@ -101,7 +93,7 @@ class AlphaMiner(object):
             source = node_list[i]
             for j in range(i + 1, len(node_list)):
                 target = node_list[j]
-                if (source, target) not in self.footprint:   # e.g. '#'
+                if (source, target) not in self.footprint and (target, source) not in self.footprint:  # e.g. '#'
                     graph.setdefault(source, set()).add(target)
                     graph.setdefault(target, set()).add(source)
 
@@ -141,19 +133,18 @@ class AlphaMiner(object):
         return maximal_cliques
 
     def _get_maximal_candidates(self) -> List[Tuple[Set[str], Set[str]]]:
-        nodes_all = set(self.nodes_agg.keys())
         # nodes_self_connected: Set[str] = {node for node in nodes_all if self.footprint.get((node, node)) == "||"}
         # looking for the maximal candidates
         candidates: List[Tuple[Set[str], Set[str]]] = []
         # loop for all nodes, including I and O
-        for a in nodes_all:
+        for a in self.transitions:
             # find max B(bi: a -> bi)
-            b_set = self.node_successors.get(a, set()) - self.node_self_connected
+            b_set = self.node_successors.get(a, set())
             if not b_set:
                 continue
 
             # find max A(ai: ai -> all B)
-            a_set = set.intersection(*[self.node_predecessors[b] for b in b_set]) - self.node_self_connected
+            a_set = set.intersection(*[self.node_predecessors[b] for b in b_set])
             if not a_set:
                 continue
 
@@ -174,35 +165,27 @@ class AlphaMiner(object):
 
         return candidates
 
-    def fit(self, trace_list: List[Tuple[List[str], int]]):
+    @staticmethod
+    def fit_footprint(trace_list: List[List[str]]) -> Dict[Tuple[str, str], str]:
+        arcs: Set[Tuple[str, str]] = set()
+        # Alpha miner ignore the freq
+        for trace in trace_list:
+            for i in range(len(trace) - 1):
+                arcs.add((trace[i], trace[i + 1]))
+        footprint: Dict[Tuple[str, str], str] = {(x, y): PARALLEL if (y, x) in arcs else CASUALTY for (x, y) in arcs}
+        return footprint
+
+    def fit(self, trace_list: List[List[str]]):
         self.clear()
-
-        # Computing the DFG(Directly Follows Graph) nodes - (activity, freq) and ((activity, activity), freq)
-        for trace, freq in trace_list:
-            trace = [START] + trace + [END]
-            self.nodes_agg[trace[0]] = self.nodes_agg.get(trace[0], 0) + freq
-            for i in range(1, len(trace)):
-                self.nodes_agg[trace[i]] = self.nodes_agg.get(trace[i], 0) + freq
-                self.arcs_agg[(trace[i - 1], trace[i])] = self.arcs_agg.get((trace[i - 1], trace[i]), 0) + freq
-
-        self.transitions = list(self.nodes_agg.keys())
-
+        trace_list = [normalize_trace(trace) for trace in trace_list]
         # Computing the alternative DFG representations: '->', '<-', '||' or '#'
-        for (x, y) in self.arcs_agg:
-            reverse_pair = (y, x)
-            if reverse_pair in self.arcs_agg:
-                self.footprint[(x, y)] = "||"
-                self.footprint[(y, x)] = "||"
-            else:
-                self.footprint[(x, y)] = "→"
-                self.footprint[(y, x)] = "←"
+        self.footprint = self.fit_footprint(trace_list)
+        self.transitions.update(v for key in self.footprint for v in key)
         # Computing node_successor AND node_predecessors:
         for (a, b), label in self.footprint.items():
-            if label == "→":
+            if label == CASUALTY:
                 self.node_successors.setdefault(a, set()).add(b)
                 self.node_predecessors.setdefault(b, set()).add(a)
-            elif label == "||" and a == b:
-                self.node_self_connected.add(a)
 
         # Computing maximal candidates, places and flow_relations
         self.maximal_candidates = self._get_maximal_candidates()
@@ -221,3 +204,79 @@ class AlphaMiner(object):
         p = f"P\n{END}"
         self.places.add(p)
         self.flow_relations[END] = {p}
+
+
+class AlphaPlusMiner(AlphaMiner):
+
+    def __init__(self):
+        super().__init__()
+        self.l1l: Set[str] = set()
+        self.l1l_predecessors: Dict[str, Set[str]] = {}
+        self.l1l_successors: Dict[str, Set[str]] = {}
+
+    @staticmethod
+    def fit_footprint(trace_list: List[List[str]]) -> Dict[Tuple[str, str], str]:
+        # Find length-1 loop e.g. L1L
+        arcs: Set[Tuple[str, str]] = set()
+        skips: Set[Tuple[str, str]] = set()
+        for trace in trace_list:
+            n = len(trace)
+            for i in range(n - 1):
+                # identify the skip relation
+                if i < n - 2 and trace[i] == trace[i + 2]:
+                    skips.add((trace[i], trace[i + 1]))
+                arcs.add((trace[i], trace[i + 1]))
+
+        footprint: Dict[Tuple[str, str], str] = {
+            (x, y): CASUALTY if (y, x) not in arcs or ((x, y) in skips and (y, x) in skips) else PARALLEL
+            for (x, y) in arcs
+        }
+        return footprint
+
+    def fit(self, trace_list: List[List[str]]):
+        self.clear()
+        trace_list = [normalize_trace(trace) for trace in trace_list]
+        # Find length-1 loop e.g. L1L
+        for trace in trace_list:
+            prev = trace[0]
+            for i in range(1, len(trace)):
+                cur = trace[i]
+                if cur == prev:
+                    self.l1l.add(cur)
+                prev = cur
+
+        new_trace_list = []
+        for trace in trace_list:
+            new_trace = [trace[0]]
+            l1l_flag = False
+            for i in range(1, len(trace)):
+                cur = trace[i]
+                cur_flag = cur in self.l1l
+                if l1l_flag ^ cur_flag:  # if prev isn't l1l and cur is l1l | prev is l1l and cur isn't l1l
+                    if cur_flag:
+                        self.l1l_predecessors.setdefault(cur, set()).add(trace[i - 1])
+                    else:
+                        self.l1l_successors.setdefault(trace[i - 1], set()).add(cur)
+                if not cur_flag:
+                    new_trace.append(cur)
+                l1l_flag = cur_flag
+            new_trace_list.append(new_trace)
+
+        super().fit(new_trace_list)
+        self.transitions = self.transitions.union(self.l1l)
+        # 合并连接在l1l集合上的relation
+        for node in self.l1l:
+            for source in self.l1l_predecessors[node]:
+                places = self.flow_relations[source]
+                for target in self.l1l_successors[node]:
+                    for p in places:
+                        # 找到合适的place
+                        if target in self.flow_relations[p]:
+                            # place到达点增加node
+                            self.flow_relations[p].add(node)
+                            # 该node的到达库所增加place
+                            self.flow_relations.setdefault(node, set()).add(p)
+                            break
+
+
+
