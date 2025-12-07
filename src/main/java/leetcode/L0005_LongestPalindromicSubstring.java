@@ -4,7 +4,7 @@ package leetcode;
 /**
  * @author : zhaochengming
  * @date : 2022/5/18 13:31
- * @description : https://leetcode.cn/problems/longest-palindromic-substring/
+ * @description : <a href="https://leetcode.cn/problems/longest-palindromic-substring/">...</a>
  */
 public class L0005_LongestPalindromicSubstring {
     static class Solution {
@@ -27,7 +27,7 @@ public class L0005_LongestPalindromicSubstring {
                 for (int j = i + 1; j < n; j ++) {
                     if (s.charAt(i) == s.charAt(j)) {
                         int len = j - i + 1;
-                        dp[i][j] = i + 1 > j - 1 || dp[i + 1][j - 1];
+                        dp[i][j] = len == 2 || dp[i + 1][j - 1];
                         if (dp[i][j] && len > length) {
                             length = len;
                             left = i;
@@ -49,6 +49,7 @@ public class L0005_LongestPalindromicSubstring {
             return right - left - 1;
         }
 
+        // 暴力
         public String longestPalindrome2(String s) {
             int n = s.length();
             if (n == 1) return s;
