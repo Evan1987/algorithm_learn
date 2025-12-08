@@ -22,11 +22,19 @@ public class L0124_BinaryTreeMaximumPathSum {
 
             int left = dfs(node.left);
             int right = dfs(node.right);
-            int res = Math.max(Math.max(left, right), 0) + node.val;
+            int res = max(left, right, 0) + node.val;
 
             // 以自身支路进行判断，不影响返回  res为单边, node.val+left+right为完整支路（无法与上层继续连接）
-            MAX_NUM = Math.max(MAX_NUM, Math.max(res, node.val + left + right));
+            MAX_NUM = max(MAX_NUM, res, node.val + left + right);
             return res;
+        }
+
+        private int max(int... nums) {
+            int ans = nums[0];
+            for (int i = 1; i < nums.length; i ++) {
+                ans = Math.max(ans, nums[i]);
+            }
+            return ans;
         }
 
 
